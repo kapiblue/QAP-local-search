@@ -1,7 +1,4 @@
-use utils::arange;
-use utils::generate_random_int_pair;
-use utils::permute_array;
-use utils::print_array;
+use utils::*;
 
 mod utils;
 
