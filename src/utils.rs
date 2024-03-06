@@ -1,10 +1,14 @@
+use num_traits::Num;
 use rand::Rng;
 
-pub fn permute_array<R: Rng + ?Sized>(rng: &mut R, array: &mut [u32]) {
+pub fn permute_array<R: Rng + ?Sized, T>(rng: &mut R, array: &mut [T])
+where
+    T: Copy,
+{
     // Generate a random integer
     let len = (&array).len();
     let mut initial_range: usize = len;
-    let mut tmp: u32;
+    let mut tmp: T;
     let mut exchange_index: usize;
     for _i in 0..array.len() {
         exchange_index = rng.gen_range(0..initial_range);
@@ -22,15 +26,22 @@ pub fn generate_random_int_pair<R: Rng + ?Sized>(rng: &mut R, range: u32) -> (u3
     return (x1, x2);
 }
 
-pub fn arange(array: &mut [u32], low: u32, step: u32) {
-    let mut current:u32 = low;
+pub fn arange<T: Num>(array: &mut [T], low: T, step: T)
+where
+    T: Copy,
+{
+    let mut current: T = low;
     for i in 0..array.len() {
         array[i] = current;
-        current += step;
+        current = current + step;
     }
 }
 
-pub fn print_array(array: &[u32]) {
+// print a generic type array
+pub fn print_array<T>(array: &[T])
+where
+    T: std::fmt::Display,
+{
     for i in 0..array.len() {
         print!("{} ", array[i]);
     }
