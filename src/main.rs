@@ -1,6 +1,8 @@
+use qap_problem::*;
 use utils::*;
 
 mod utils;
+mod qap_problem;
 
 fn main() {
     // Create a random generator to reuse
@@ -21,20 +23,14 @@ fn main() {
     println!("\nRandom pair: {}, {}", x1, x2);
 
     // Test reading a sample file
-    let filename = "data/qapdatsol/chr12a.dat";
-
-    match parse_file(filename) {
-        Ok(matrices) => {
+    match QapProblem::new("data/qapdatsol/chr12a.dat"){
+        Ok(sample_qap) => {
             println!("Matrix A:");
-            for row in &matrices.a {
-                println!("{:?}", row);
-            }
-
+            print_matrix(sample_qap.matrix_a_ref());
             println!("Matrix B:");
-            for row in &matrices.b {
-                println!("{:?}", row);
-            }
+            print_matrix(sample_qap.matrix_b_ref());
         }
         Err(err) => eprintln!("Error: {}", err),
     }
+    
 }

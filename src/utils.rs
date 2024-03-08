@@ -1,8 +1,6 @@
 use num_traits::Num;
 use rand::Rng;
 use std::time::Instant;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 
 /// The `permute_array` function in Rust shuffles the elements of an array using a random number
 /// generator.
@@ -86,6 +84,15 @@ where
     }
 }
 
+pub fn print_matrix<T>(matrix: &Vec<Vec<T>>)
+where
+    T: std::fmt::Debug,
+{
+    for row in matrix {
+        println!("{:?}", row);
+    }
+}
+
 // pub fn timeit<F: Fn() -> T, T>(f: F, i: u32) -> T {
 //     let start = Instant::now();
 //     let result = f();
@@ -93,67 +100,3 @@ where
 //     println!("it took {} seconds", duration.as_millis());
 //     result
 //   }
-
-
-// Define a struct for matrix A and B
-pub struct Matrices {
-    pub a: Vec<Vec<i32>>,
-    pub b: Vec<Vec<i32>>,
-}
-
-
-// Function to parse the file
-pub fn parse_file(filename: &str) -> Result<Matrices, std::io::Error> {
-    let file = File::open(filename)?;
-    let reader = BufReader::new(file);
-    let mut lines = reader.lines();
-
-    // Parse the first line to get the size of the matrices
-    let n: usize = lines.next().unwrap()?.trim().parse().unwrap();
-
-    // Skip the empty line
-    lines.next();
-
-    // Parse matrix A
-    let mut matrix_a = Vec::with_capacity(n);
-    for _ in 0..n {
-        let line = lines.next().unwrap()?;
-        let row: Vec<i32> = line
-            .split_whitespace()
-            .map(|s| s.parse().unwrap())
-            .collect();
-        matrix_a.push(row);
-    }
-
-    // Skip the empty line
-    lines.next();
-
-    // Parse matrix B
-    let mut matrix_b: Vec<Vec<i32>> = Vec::with_capacity(n);
-    for _ in 0..n {
-        let mut row: Vec<i32> = Vec::with_capacity(n);
-        let mut count: usize = 0;
-        let mut line: String = String::new();
-        loop {
-            line += &lines.next().unwrap()?;
-            let nums: Vec<&str> = line.split_whitespace().collect();
-            for num in nums {
-                if count < n {
-                    row.push(num.parse().unwrap());
-                    count += 1;
-                } else {
-                    break;
-                }
-            }
-            if count >= n {
-                break;
-            }
-        }
-        matrix_b.push(row);
-    }
-
-    Ok(Matrices {
-        a: matrix_a,
-        b: matrix_b,
-    })
-}
