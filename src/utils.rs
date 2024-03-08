@@ -82,6 +82,7 @@ where
     for i in 0..array.len() {
         print!("{} ", array[i]);
     }
+    println!();
 }
 
 pub fn print_matrix<T>(matrix: &Vec<Vec<T>>)
