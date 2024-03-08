@@ -11,6 +11,7 @@ pub struct QapProblem {
 impl QapProblem {
     // Constructor
     pub fn new(filename: &str) -> Result<QapProblem, std::io::Error> {
+        // Create and return an object if no error
         match Self::parse_file(filename) {
             Ok((n, matrix_a, matrix_b)) => Ok(QapProblem {
                 filename: String::from(filename),
@@ -22,10 +23,11 @@ impl QapProblem {
         }
     }
 
+    // Returns a reference to matrix a
     pub fn matrix_a_ref(&self) -> &Vec<Vec<i32>> {
         &self.matrix_a
     }
-
+    // Returns a reference to matrix b
     pub fn matrix_b_ref(&self) -> &Vec<Vec<i32>> {
         &self.matrix_b
     }
