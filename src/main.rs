@@ -31,6 +31,7 @@ fn main() {
             print_matrix(sample_qap.matrix_a_ref());
             println!("Matrix B:");
             print_matrix(sample_qap.matrix_b_ref());
+            // Evaluate the optimal solution
             let optimal_solution: [usize; 12] = [7, 5, 12, 2, 1, 3, 9, 11, 10, 6, 8, 4];
             let eval: i32 = evaluate(
                 &optimal_solution,
@@ -40,6 +41,15 @@ fn main() {
             println!("Optimal solution:");
             print_array(&optimal_solution);
             println!("Evaluation of the optimum: {}", eval);
+
+            // Genrate a vector o pairs
+            let mut pairs = generate_pairs(sample_qap.get_n());
+            // Randomly permute the vector
+            permute_array(&mut rng, &mut pairs);
+            // Print for verification
+            for row in pairs {
+                println!("{:?}", row);
+            }
         }
         Err(err) => eprintln!("Error: {}", err),
     }

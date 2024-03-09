@@ -32,6 +32,10 @@ impl QapProblem {
         &self.matrix_b
     }
 
+    pub fn get_n(&self) -> usize {
+        self.n
+    }
+
     // Function to parse the file
     fn parse_file(filename: &str) -> Result<(usize, Vec<Vec<i32>>, Vec<Vec<i32>>), std::io::Error> {
         let file = File::open(filename)?;

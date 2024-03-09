@@ -7,14 +7,14 @@ pub fn evaluate<V: num_traits::Num>(
     matrix_b: &Vec<Vec<V>>,
 ) -> V
 where
-    V: Copy
+    V: Copy,
 {
     let n = solution.len();
     let mut evaluation: V = num_traits::zero();
     for i in 0..n {
         for j in 0..n {
-            let facility1 = solution[i]-1;
-            let facility2 = solution[j]-1;
+            let facility1 = solution[i] - 1;
+            let facility2 = solution[j] - 1;
             let location1 = i;
             let location2 = j;
 

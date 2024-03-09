@@ -45,6 +45,18 @@ pub fn generate_random_int_pair<R: Rng + ?Sized>(rng: &mut R, range: u32) -> (u3
     return (x1, x2);
 }
 
+// Generates all pairs (i,j) i!=j where i=0..n, j=i..n.
+// Returns a vector of pairs 
+pub fn generate_pairs(n: usize) -> Vec<[usize; 2]> {
+    let mut pairs = Vec::with_capacity(n);
+    for i in 0..n{
+        for j in i+1..n{
+            pairs.push([i, j]);
+        }
+    }
+    pairs
+}
+
 /// The function `arange` populates a mutable array with values starting from a given low value and
 /// incrementing by a specified step.
 /// 
@@ -77,10 +89,10 @@ where
 /// each element followed by a space.
 pub fn print_array<T>(array: &[T])
 where
-    T: std::fmt::Display,
+    T: std::fmt::Display + std::fmt::Debug,
 {
-    for i in 0..array.len() {
-        print!("{} ", array[i]);
+    for value in array {
+        print!("{:?} ", value);
     }
     println!();
 }
