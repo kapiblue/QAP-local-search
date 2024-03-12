@@ -1,3 +1,5 @@
+use rand::rngs::ThreadRng;
+
 use crate::qap_problem::QapProblem;
 use crate::solvers::solver::Solver;
 use crate::solution::Solution;
@@ -5,28 +7,32 @@ use crate::utils::*;
 
 pub struct RandomSolver<'a> {
     problem: &'a QapProblem,
+    rng: ThreadRng,
 }
 
 impl<'a> RandomSolver<'a> {
     // Constructor
     pub fn new(problem: &'a QapProblem) -> RandomSolver<'a> {
-        RandomSolver { problem }
+        let rng = rand::thread_rng();
+        RandomSolver { problem, rng }
     }
 
     // Private method specific to RandomSolver
-    fn generate_random_solution(&self) -> Solution {
-        let mut rng = rand::thread_rng();
+    fn generate_random_solution(&mut self) -> Solution {
         let n = self.problem.get_n();
         let mut solution_array = vec![0; n];
         arange(&mut solution_array, 1, 1);
-        permute_array(&mut rng, &mut solution_array);
+        permute_array(&mut self.rng, &mut solution_array);
         Solution::new(solution_array)
     }
-}
-
-
-impl<'a> Solver for RandomSolver<'a>{
-    fn solve(&self) -> Solution {
+    pub fn solve(&mut self) -> Solution {
         self.generate_random_solution()
     }
 }
+
+
+// impl<'a> Solver for RandomSolver<'a>{
+//     fn solve(&self) -> Solution {
+//         self.generate_random_solution()
+//     }
+// }

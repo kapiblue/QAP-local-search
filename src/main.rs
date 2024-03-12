@@ -37,7 +37,7 @@ fn main() {
             print_matrix(sample_qap.matrix_b_ref());
             
             // init random solver
-            let random_solver: RandomSolver<'_> = RandomSolver::new(&sample_qap);
+            let mut random_solver: RandomSolver<'_> = RandomSolver::new(&sample_qap);
 
             // call solve() method using random solver
             let solution: Solution = random_solver.solve();
