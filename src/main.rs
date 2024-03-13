@@ -8,6 +8,7 @@ mod utils;
 
 mod solvers;
 use solvers::random_solver::RandomSolver;
+use solvers::local_search_solver::LocalSearchSolver;
 use solvers::solver::Solver;
 
 fn main() {
@@ -63,6 +64,10 @@ fn main() {
             println!("Exchanged solution: {}", solution);
 
             println!("Error: {}", cost_ex - (cost + delta));
+
+            let mut ls_solver: LocalSearchSolver<'_> = LocalSearchSolver::new(&sample_qap);
+            let ls_solution = ls_solver.solve(solution);
+            println!("Exchanged solution: {}", ls_solution);
 
             // // Genrate a vector o pairs
             // let mut pairs = generate_pairs(sample_qap.get_n());
