@@ -28,6 +28,9 @@
 // method might be removed.
 
 // Implemented class for the Solution with evaluate() method
+
+use core::fmt;
+
 pub struct Solution {
     pub solution_array: Vec<usize>,
     eval: i32,
@@ -102,5 +105,11 @@ impl Solution {
                 delta + (matrix_a[i][g] - matrix_a[j][g]) * (matrix_b[fj][fg] - matrix_b[fi][fg]);
         }
         delta
+    }
+}
+
+impl fmt::Display for Solution {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Solution: {:?}, evaluation {}", self.solution_array, self.eval)
     }
 }

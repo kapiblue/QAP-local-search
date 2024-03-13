@@ -41,29 +41,27 @@ fn main() {
 
             // call solve() method using random solver
             let mut solution: Solution = random_solver.solve();
-
-            println!("Random solution array: {:?}", solution.solution_array);
-
             let cost = solution.evaluate(
                 sample_qap.matrix_a_ref(),
                 sample_qap.matrix_b_ref()
             );
-            println!("Evaluation of a random solution: {}", cost);
+
+            println!("Random solution: {}", solution);
+
 
             let delta = solution.calculate_delta(sample_qap.matrix_a_ref(),
             sample_qap.matrix_b_ref(), &[1,5]);
 
             println!("Delta: {}", delta);
 
-            // We need to decide whether to index the solution starting from 0 or 1
             solution.exchange_facilities(&[1,5]);
-            println!("Exchanged solution array: {:?}", solution.solution_array);
-
             let cost_ex = solution.evaluate(
                 sample_qap.matrix_a_ref(),
                 sample_qap.matrix_b_ref()
             );
-            println!("Evaluation after the exchange: {}", cost_ex);
+            
+            println!("Exchanged solution: {}", solution);
+
             println!("Error: {}", cost_ex - (cost + delta));
 
             // // Genrate a vector o pairs
