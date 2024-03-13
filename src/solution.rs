@@ -53,10 +53,10 @@ impl Solution {
         let mut evaluation: i32 = 0;
 
         for i in 0..n {
+            let facility1 = self.solution_array[i];
+            let location1 = i;
             for j in 0..n {
-                let facility1 = self.solution_array[i] - 1;
-                let facility2 = self.solution_array[j] - 1;
-                let location1 = i;
+                let facility2 = self.solution_array[j];
                 let location2 = j;
 
                 evaluation =
@@ -82,11 +82,11 @@ impl Solution {
         pair: &[usize; 2],
     ) -> i32 {
         let mut delta: i32 = 0;
-        let i = pair[0] - 1;
-        let j = pair[1] - 1;
+        let i = pair[0];
+        let j = pair[1];
 
-        let fi = self.solution_array[i] - 1;
-        let fj = self.solution_array[j] - 1;
+        let fi = self.solution_array[i];
+        let fj = self.solution_array[j];
 
         delta = delta + (matrix_a[i][i] - matrix_a[j][j]) * (matrix_b[fj][fj] - matrix_b[fi][fi]);
         delta = delta + (matrix_a[i][j] - matrix_a[j][i]) * (matrix_b[fj][fi] - matrix_b[fi][fj]);
@@ -94,7 +94,7 @@ impl Solution {
             if g == i || g == j {
                 continue;
             }
-            let fg = self.solution_array[g] - 1;
+            let fg = self.solution_array[g];
 
             delta =
                 delta + (matrix_a[g][i] - matrix_a[g][j]) * (matrix_b[fg][fj] - matrix_b[fg][fi]);

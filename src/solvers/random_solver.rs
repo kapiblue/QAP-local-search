@@ -21,7 +21,7 @@ impl<'a> RandomSolver<'a> {
     fn generate_random_solution(&mut self) -> Solution {
         let n = self.problem.get_n();
         let mut solution_array = vec![0; n];
-        arange(&mut solution_array, 1, 1);
+        arange(&mut solution_array, 0, 1);
         permute_array(&mut self.rng, &mut solution_array);
         Solution::new(solution_array)
     }

@@ -56,7 +56,7 @@ fn main() {
             println!("Delta: {}", delta);
 
             // We need to decide whether to index the solution starting from 0 or 1
-            solution.exchange_facilities(&[0,4]);
+            solution.exchange_facilities(&[1,5]);
             println!("Exchanged solution array: {:?}", solution.solution_array);
 
             let cost_ex = solution.evaluate(
