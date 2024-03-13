@@ -9,6 +9,7 @@ mod utils;
 mod solvers;
 use solvers::random_solver::RandomSolver;
 use solvers::local_search_solver::LocalSearchSolver;
+use solvers::steepest_ls_solver::SteepestLSSolver;
 use solvers::solver::Solver;
 
 fn main() {
@@ -68,6 +69,15 @@ fn main() {
             let mut ls_solver: LocalSearchSolver<'_> = LocalSearchSolver::new(&sample_qap);
             let ls_solution = ls_solver.solve(solution);
             println!("Exchanged solution: {}", ls_solution);
+
+            // init random solver
+            let mut random_solver: RandomSolver<'_> = RandomSolver::new(&sample_qap);
+
+            // call solve() method using random solver
+            let mut solution: Solution = random_solver.solve();
+            let mut steepest_solver: SteepestLSSolver<'_> = SteepestLSSolver::new(&sample_qap);
+            let steepest_solution = steepest_solver.solve(solution);
+            println!("Steepest solution: {}", steepest_solution)
 
             // // Genrate a vector o pairs
             // let mut pairs = generate_pairs(sample_qap.get_n());
