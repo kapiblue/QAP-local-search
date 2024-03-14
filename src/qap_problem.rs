@@ -2,7 +2,6 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 pub struct QapProblem {
-    filename: String,
     n: usize,
     matrix_a: Vec<Vec<i32>>,
     matrix_b: Vec<Vec<i32>>,
@@ -14,7 +13,6 @@ impl QapProblem {
         // Create and return an object if no error
         match Self::parse_file(filename) {
             Ok((n, matrix_a, matrix_b)) => Ok(QapProblem {
-                filename: String::from(filename),
                 n: n,
                 matrix_a: matrix_a,
                 matrix_b: matrix_b,

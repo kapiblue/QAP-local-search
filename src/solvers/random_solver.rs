@@ -25,14 +25,17 @@ impl<'a> RandomSolver<'a> {
         permute_array(&mut self.rng, &mut solution_array);
         Solution::new(solution_array)
     }
-    pub fn solve(&mut self) -> Solution {
-        self.generate_random_solution()
-    }
+    // pub fn solve(&mut self) -> Solution {
+    //     self.generate_random_solution()
+    // }
 }
 
 
-// impl<'a> Solver for RandomSolver<'a>{
-//     fn solve(&self) -> Solution {
-//         self.generate_random_solution()
-//     }
-// }
+impl<'a> Solver for RandomSolver<'a>{
+    fn solve(&mut self) -> Solution {
+       let mut solution =  self.generate_random_solution();
+       let eval = solution.evaluate(self.problem.matrix_a_ref(), 
+       self.problem.matrix_b_ref());
+       solution
+    }
+}

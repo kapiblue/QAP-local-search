@@ -4,6 +4,7 @@ use utils::*;
 
 mod qap_problem;
 mod solution;
+mod experiment;
 mod utils;
 
 mod solvers;
@@ -11,6 +12,8 @@ use solvers::random_solver::RandomSolver;
 use solvers::local_search_solver::LocalSearchSolver;
 use solvers::steepest_ls_solver::SteepestLSSolver;
 use solvers::solver::Solver;
+
+use crate::experiment::Experiment;
 
 fn main() {
     // Create a random generator to reuse
@@ -77,16 +80,11 @@ fn main() {
             let mut solution: Solution = random_solver.solve();
             let mut steepest_solver: SteepestLSSolver<'_> = SteepestLSSolver::new(&sample_qap);
             let steepest_solution = steepest_solver.solve(solution);
-            println!("Steepest solution: {}", steepest_solution)
+            println!("Steepest solution: {}", steepest_solution);
 
-            // // Genrate a vector o pairs
-            // let mut pairs = generate_pairs(sample_qap.get_n());
-            // // Randomly permute the vector
-            // permute_array(&mut rng, &mut pairs);
-            // // Print for verification
-            // for row in pairs {
-            //     println!("{:?}", row);
-            // }
+            let mut experiment = Experiment::new(&mut random_solver, 100);
+            experiment.run();
+            experiment.save_results("123.csv".to_string());
         }
         Err(err) => eprintln!("Error: {}", err),
     }

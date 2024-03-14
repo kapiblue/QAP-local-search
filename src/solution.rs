@@ -50,6 +50,10 @@ impl Solution {
         }
     }
 
+    pub fn get_eval(&self) -> i32 {
+        self.eval
+    }
+
     // evaluate the solution based on the provided matrices A and B
     pub fn evaluate(&mut self, matrix_a: &Vec<Vec<i32>>, matrix_b: &Vec<Vec<i32>>) -> i32 {
         let n: usize = self.solution_array.len();
@@ -110,6 +114,10 @@ impl Solution {
 
 impl fmt::Display for Solution {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Solution: {:?}, evaluation {}", self.solution_array, self.eval)
+        write!(
+            f,
+            "Solution: {:?}, evaluation {}",
+            self.solution_array, self.eval
+        )
     }
 }
