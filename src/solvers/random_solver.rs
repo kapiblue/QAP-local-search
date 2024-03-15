@@ -39,7 +39,10 @@ impl<'a> Solver for RandomSolver<'a>{
        self.problem.matrix_b_ref());
        solution
     }
-    fn get_type(&self) -> &str {
-        return "random"
+    fn get_iter_count(&self) -> i32 {
+        0
+    }
+    fn get_update_count(&self) -> i32 {
+        0
     }
 }

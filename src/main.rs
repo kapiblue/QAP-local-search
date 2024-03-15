@@ -17,6 +17,7 @@ use std::path::Path;
 
 const INSTANCES: [&str; 1] = ["chr12a.dat"];
 const RESULTS_FOLDER: &str = "results";
+// This folder should be inside ./data
 const DATA_FOLDER: &str = "qapdatsol";
 
 fn main() {
@@ -36,8 +37,9 @@ fn main() {
 
                 // init random solver
                 let mut random_solver: RandomSolver<'_> = RandomSolver::new(&qap_problem);
-                let mut experiment = Experiment::new(&mut random_solver, 100);
-                experiment.run();
+                let mut experiment = Experiment::new(&mut random_solver, 10);
+                // Run with a time limit of 10 milliseconds
+                experiment.run_with_timelimit(10);
                 let path = Path::new(".")
                     .join(RESULTS_FOLDER)
                     .join(instance_filename.to_owned() + "_random.csv")
@@ -45,15 +47,16 @@ fn main() {
                     .to_string();
                 let _ = experiment.save_results(&path);
 
-                // let mut ls_solver: LocalSearchSolver<'_> = LocalSearchSolver::new(&qap_problem);
-                // let mut experiment = Experiment::new(&mut ls_solver, 100);
-                // experiment.run();
-                // let path = Path::new(".")
-                //     .join(RESULTS_FOLDER)
-                //     .join(instance_filename.to_owned() + "_ls_greedy.csv")
-                //     .to_string_lossy()
-                //     .to_string();
-                // let _ = experiment.save_results(&path);
+                let mut ls_solver: LocalSearchSolver<'_> = LocalSearchSolver::new(&qap_problem);
+                let mut experiment = Experiment::new(&mut ls_solver, 10);
+                // Run LS greedy for 10 times
+                experiment.run();
+                let path = Path::new(".")
+                    .join(RESULTS_FOLDER)
+                    .join(instance_filename.to_owned() + "_ls_greedy.csv")
+                    .to_string_lossy()
+                    .to_string();
+                let _ = experiment.save_results(&path);
             }
             Err(err) => eprintln!("Error: {}", err),
         }
