@@ -81,15 +81,15 @@ fn main() {
             let mut random_solver: RandomSolver<'_> = RandomSolver::new(&sample_qap);
 
             // call solve() method using random solver
-            let mut solution: Solution = random_solver.solve();
+            let solution: Solution = random_solver.solve();
             let mut steepest_solver: SteepestLSSolver<'_> = SteepestLSSolver::new(&sample_qap);
             let steepest_solution = steepest_solver.solve(solution);
             println!("Steepest solution: {}", steepest_solution);
 
             let mut experiment = Experiment::new(&mut random_solver, 100);
-            let path = Path::new("..").join("results").join("random.csv");
+            let path = Path::new(".").join("results").join("random.csv").to_string_lossy().to_string();
             experiment.run();
-            experiment.save_results(path);
+            experiment.save_results(&path);
         }
         Err(err) => eprintln!("Error: {}", err),
     }

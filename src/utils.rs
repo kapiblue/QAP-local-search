@@ -1,6 +1,5 @@
 use num_traits::Num;
 use rand::Rng;
-use std::time::Instant;
 
 /// The `permute_array` function in Rust shuffles the elements of an array using a random number
 /// generator.
