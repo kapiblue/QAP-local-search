@@ -4,4 +4,5 @@ use crate::solution::Solution;
 // solve(), but we may think what should be added later on
 pub trait Solver {
     fn solve(&mut self) -> Solution;
+    fn get_type(&self) -> &str;
 }

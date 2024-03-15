@@ -1,9 +1,8 @@
 use crate::solution::Solution;
-use crate::solvers::solver::Solver;
+use crate::solvers::solver::{Solver};
 
 use csv::Writer;
 use std::error::Error;
-use std::path::PathBuf;
 use std::time::Instant;
 
 pub struct Experiment<'a> {
@@ -52,16 +51,10 @@ impl<'a> Experiment<'a> {
         }
     }
     pub fn save_results(&self, path: &String) -> Result<(), Box<dyn Error>> {
-        println!("{}", path);
         let mut wtr = Writer::from_path(path)?;
         // Write column names
         wtr.write_record(&["run", "solution", "evaluation", "iteration", "time"])?;
         for i in 0..self.n_runs {
-            // let solution_string = self.solutions[i].solution_array
-            // .into_iter()
-            // .map(|c| c.to_string())
-            // .collect::<Vec<String>>()
-            // .join(",");
             wtr.write_record(&[
                 i.to_string(),
                 format!("{:?}", &self.solutions[i].solution_array),

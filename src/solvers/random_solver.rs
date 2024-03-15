@@ -17,6 +17,7 @@ impl<'a> RandomSolver<'a> {
         RandomSolver { problem, rng }
     }
 
+    
     // Private method specific to RandomSolver
     fn generate_random_solution(&mut self) -> Solution {
         let n = self.problem.get_n();
@@ -37,5 +38,8 @@ impl<'a> Solver for RandomSolver<'a>{
        let eval = solution.evaluate(self.problem.matrix_a_ref(), 
        self.problem.matrix_b_ref());
        solution
+    }
+    fn get_type(&self) -> &str {
+        return "random"
     }
 }
