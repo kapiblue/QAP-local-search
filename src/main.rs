@@ -1,3 +1,6 @@
+use std::path::Path;
+
+
 use qap_problem::*;
 use solution::*;
 use utils::*;
@@ -6,14 +9,15 @@ mod qap_problem;
 mod solution;
 mod experiment;
 mod utils;
-
 mod solvers;
+
 use solvers::random_solver::RandomSolver;
 use solvers::local_search_solver::LocalSearchSolver;
 use solvers::steepest_ls_solver::SteepestLSSolver;
 use solvers::solver::Solver;
 
 use crate::experiment::Experiment;
+
 
 fn main() {
     // Create a random generator to reuse
@@ -83,8 +87,9 @@ fn main() {
             println!("Steepest solution: {}", steepest_solution);
 
             let mut experiment = Experiment::new(&mut random_solver, 100);
+            let path = Path::new("..").join("results").join("random.csv");
             experiment.run();
-            experiment.save_results("123.csv".to_string());
+            experiment.save_results(path);
         }
         Err(err) => eprintln!("Error: {}", err),
     }
