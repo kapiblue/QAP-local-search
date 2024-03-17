@@ -5,7 +5,7 @@ use crate::solution::Solution;
 use crate::solvers::solver::Solver;
 use crate::utils::*;
 
-pub struct LocalSearchSolver<'a> {
+pub struct GreedyLSSolver<'a> {
     problem: &'a QapProblem,
     candidate_moves: Vec<[usize; 2]>,
     rng: ThreadRng,
@@ -13,15 +13,15 @@ pub struct LocalSearchSolver<'a> {
     update_count: i32, // The number of times a solution is updated
 }
 
-impl<'a> LocalSearchSolver<'a> {
+impl<'a> GreedyLSSolver<'a> {
     // Constructor
-    pub fn new(problem: &'a QapProblem) -> LocalSearchSolver<'a> {
+    pub fn new(problem: &'a QapProblem) -> GreedyLSSolver<'a> {
         // Vector of pairs (i, j), moves in order
         let candidate_moves = generate_pairs(problem.get_n());
         let rng = rand::thread_rng();
         let iter_count: i32 = 0;
         let update_count: i32 = 0;
-        LocalSearchSolver {
+        GreedyLSSolver {
             problem,
             candidate_moves,
             rng,
@@ -29,18 +29,17 @@ impl<'a> LocalSearchSolver<'a> {
             update_count,
         }
     }
-}
 
-impl<'a> Solver for LocalSearchSolver<'a> {
-    // Just greedy
-    fn solve(&mut self) -> Solution {
-
-        // TODO: move generate random solution to QAP problem class
+    fn generate_random_solution(&mut self) -> Solution {
         let n = self.problem.get_n();
         let mut solution_array = vec![0; n];
         arange(&mut solution_array, 0, 1);
         permute_array(&mut self.rng, &mut solution_array);
-        let mut initial_solution = Solution::new(solution_array);
+        Solution::new(solution_array)
+    }
+
+    fn solve_greedy(&mut self, initial_solution: Solution) -> Solution {
+        let mut initial_solution = initial_solution;
         initial_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
 
         let mut current_solution = initial_solution;
@@ -74,6 +73,18 @@ impl<'a> Solver for LocalSearchSolver<'a> {
         self.iter_count = iter_count;
         current_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         return current_solution;
+    }
+
+    
+}
+
+impl<'a> Solver for GreedyLSSolver<'a> {
+    // Just greedy
+    fn solve(&mut self) -> Solution {
+        let initial_solution = self.generate_random_solution();
+        self.solve_greedy(initial_solution)
+        // TODO: move generate random solution to QAP problem class
+        
     }
     fn get_iter_count(&self) -> i32 {
         0

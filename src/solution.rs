@@ -54,6 +54,10 @@ impl Solution {
         self.eval
     }
 
+    pub fn get_solution_array(&self) -> Vec<usize> {
+        self.solution_array.clone()
+    }
+
     // evaluate the solution based on the provided matrices A and B
     pub fn evaluate(&mut self, matrix_a: &Vec<Vec<i32>>, matrix_b: &Vec<Vec<i32>>) -> i32 {
         let n: usize = self.solution_array.len();

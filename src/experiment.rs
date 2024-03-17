@@ -28,14 +28,17 @@ impl<'a> Experiment<'a> {
     }
     // Run solver n times
     pub fn run(&mut self) -> () {
-        for _ in 0..self.n_runs {
+        for i in 0..self.n_runs {
             let start = Instant::now();
+
             let solution = self.solver.solve();
             let n_iterations = self.solver.get_iter_count();
             let elapsed = start.elapsed().as_millis();
+            println!("Algorithm iteration {}; Best found solution evaluation {}", i, solution.get_eval());
             self.solutions.push(solution);
             self.iterations.push(n_iterations);
             self.elapsed_time.push(elapsed);
+            
         }
     }
 
@@ -49,6 +52,7 @@ impl<'a> Experiment<'a> {
                 elapsed = start.elapsed().as_millis();
                 let solution = self.solver.solve();
                 n_iterations = n_iterations + 1;
+                println!("Algorithm iteration {}; Best found solution evaluation {}", n_iterations, solution.get_eval());
                 self.solutions.push(solution);
             }
             self.iterations.push(n_iterations);

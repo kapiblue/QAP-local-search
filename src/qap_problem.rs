@@ -1,10 +1,14 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use crate::utils::*;
+use crate::solution::Solution;
+use rand::rngs::ThreadRng;
 
 pub struct QapProblem {
     n: usize,
     matrix_a: Vec<Vec<i32>>,
     matrix_b: Vec<Vec<i32>>,
+    rng: ThreadRng,
 }
 
 impl QapProblem {
@@ -16,9 +20,21 @@ impl QapProblem {
                 n: n,
                 matrix_a: matrix_a,
                 matrix_b: matrix_b,
+                rng: rand::thread_rng(),
             }),
             Err(err) => Err(err),
         }
+    }
+
+    // TODO: this function can't be used for now as it requires
+    // &mut reference. QAPProblem object is not mutable when passed
+    // to the solvers.
+    pub fn generate_random_solution(&mut self) -> Solution {
+        let n = self.get_n();
+        let mut solution_array = vec![0; n];
+        arange(&mut solution_array, 0, 1);
+        permute_array(&mut self.rng, &mut solution_array);
+        Solution::new(solution_array)
     }
 
     // Returns a reference to matrix a
