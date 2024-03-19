@@ -21,7 +21,7 @@ const INSTANCES: [&str; 8] = [
                               "bur26c.dat",
                               "chr12a.dat",
                               "els19.dat",
-                              "esc64a.dat",
+                              "lipa60a.dat",
                               "esc128.dat",
                               "had20.dat",
                               "kra30a.dat",
