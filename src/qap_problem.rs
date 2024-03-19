@@ -74,7 +74,9 @@ impl QapProblem {
         }
 
         // Skip the empty line
-        lines.next();
+        //&lines.;
+  //      let possibly_empty_line:String = lines.peek();
+//        println!("{}", possibly_empty_line);
 
         // Parse matrix B
         let mut matrix_b: Vec<Vec<i32>> = Vec::with_capacity(n);
@@ -97,9 +99,12 @@ impl QapProblem {
                     break;
                 }
             }
+            println!("{}", row.len());
+            assert_eq!(row.len(), n);
             matrix_b.push(row);
         }
-
+        assert_eq!(matrix_a.len(), n);
+        assert_eq!(matrix_b.len(), n);
         Ok((n, matrix_a, matrix_b))
     }
 }

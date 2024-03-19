@@ -17,7 +17,16 @@ use crate::solvers::random_walk_solver::RandomWalkSolver;
 
 use std::path::Path;
 
-const INSTANCES: [&str; 1] = ["chr12a.dat"];
+const INSTANCES: [&str; 8] = [
+                              "bur26c.dat",
+                              "chr12a.dat",
+                              "els19.dat",
+                              "esc64a.dat",
+                              "esc128.dat",
+                              "had20.dat",
+                              "kra30a.dat",
+                              "nug15.dat"];
+                            
 const RESULTS_FOLDER: &str = "results";
 // This folder should be inside ./data
 const DATA_FOLDER: &str = "qapdatsol";
@@ -30,6 +39,7 @@ fn main() {
             .join(instance_filename)
             .to_string_lossy()
             .to_string();
+        println!("{}", instance_filename);
         match QapProblem::new(&instance_path) {
             Ok(qap_problem) => {
                 println!("Matrix A:");
@@ -82,9 +92,9 @@ fn main() {
                     .to_string();
                 let _ = experiment.save_results(&path);
 
-
                 println!("Random Walk Solver");
-                let mut ls_solver: RandomWalkSolver<'_> = RandomWalkSolver::new(&qap_problem, Some(1000));
+                let mut ls_solver: RandomWalkSolver<'_> =
+                    RandomWalkSolver::new(&qap_problem, Some(1000));
                 let mut experiment = Experiment::new(&mut ls_solver, 10);
                 // Run LS greedy for 10 times
                 experiment.run();
@@ -108,8 +118,6 @@ fn main() {
                     .to_string_lossy()
                     .to_string();
                 let _ = experiment.save_results(&path);
-
-
             }
             Err(err) => eprintln!("Error: {}", err),
         }
