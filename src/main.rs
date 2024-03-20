@@ -21,10 +21,10 @@ const INSTANCES: [&str; 8] = [
                               "bur26c.dat",
                               "chr12a.dat",
                               "els19.dat",
-                              "lipa60a.dat",
+                              "tai80.dat",
                               "esc128.dat",
                               "had20.dat",
-                              "kra30a.dat",
+                              "nug30.dat",
                               "nug15.dat"];
                             
 const RESULTS_FOLDER: &str = "results";

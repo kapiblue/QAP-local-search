@@ -97,8 +97,6 @@ impl<'a> RandomWalkSolver<'a> {
         }
         best_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         best_solution
-
-        
     }
 
     
@@ -108,9 +106,9 @@ impl<'a> Solver for RandomWalkSolver<'a> {
     // Just greedy
     fn solve(&mut self) -> Solution {
         let initial_solution = self.generate_random_solution();
-        self.solve_random_walk(initial_solution)
+        let solution = self.solve_random_walk(initial_solution);
+        return solution;
         // TODO: move generate random solution to QAP problem class
-        
     }
     fn get_iter_count(&self) -> i32 {
         0

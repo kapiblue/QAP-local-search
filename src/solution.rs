@@ -30,6 +30,7 @@
 // Implemented class for the Solution with evaluate() method
 
 use core::fmt;
+use std::f32::INFINITY;
 
 pub struct Solution {
     pub solution_array: Vec<usize>,
@@ -41,7 +42,7 @@ impl Solution {
     // constructor
     pub fn new(solution_array: Vec<usize>) -> Self {
         // Revise
-        let eval: i32 = 1000000;
+        let eval: i32 = std::f32::INFINITY as i32;
         let n = solution_array.len();
         Solution {
             solution_array,

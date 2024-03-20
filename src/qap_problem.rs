@@ -99,11 +99,10 @@ impl QapProblem {
                     break;
                 }
             }
-            println!("{}", row.len());
             assert_eq!(row.len(), n);
             matrix_b.push(row);
         }
-        assert_eq!(matrix_a.len(), n);
+                assert_eq!(matrix_a.len(), n);
         assert_eq!(matrix_b.len(), n);
         Ok((n, matrix_a, matrix_b))
     }
