@@ -43,7 +43,7 @@ impl<'a> GreedyLSSolver<'a> {
         initial_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
 
         let mut current_solution = initial_solution;
-        println!("LS initial solution: {}", current_solution);
+        // println!("LS initial solution: {}", current_solution);
         // Randomize the order of pairs
         permute_array(&mut self.rng, &mut self.candidate_moves);
         let mut iter_count = 0;

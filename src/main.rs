@@ -15,13 +15,14 @@ use crate::experiment::Experiment;
 use crate::solvers::greedy_heuristic_solver::HeuristicSolver;
 use crate::solvers::random_walk_solver::RandomWalkSolver;
 
+use core::time;
 use std::path::Path;
 
 const INSTANCES: [&str; 8] = [
+                              "tai60a.dat",
+                              "wil100.dat",
                               "bur26c.dat",
-                              "chr12a.dat",
                               "els19.dat",
-                              "tai80.dat",
                               "esc128.dat",
                               "had20.dat",
                               "nug30.dat",
@@ -30,6 +31,7 @@ const INSTANCES: [&str; 8] = [
 const RESULTS_FOLDER: &str = "results";
 // This folder should be inside ./data
 const DATA_FOLDER: &str = "qapdatsol";
+const NRUNS: usize = 10;
 
 fn main() {
     for instance_filename in INSTANCES {
@@ -42,48 +44,40 @@ fn main() {
         println!("{}", instance_filename);
         match QapProblem::new(&instance_path) {
             Ok(qap_problem) => {
-                println!("Matrix A:");
-                print_matrix(qap_problem.matrix_a_ref());
-                println!("Matrix B:");
-                print_matrix(qap_problem.matrix_b_ref());
+                
+                // GREEDY
+                println!("Greedy Solver");
+                let mut ls_solver: GreedyLSSolver<'_> = GreedyLSSolver::new(&qap_problem);
+                let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
+                experiment.run();
+                let path = Path::new(".")
+                    .join(RESULTS_FOLDER)
+                    .join(instance_filename.to_owned() + "_greedy.csv")
+                    .to_string_lossy()
+                    .to_string();
+                let _ = experiment.save_results(&path);
+                // Collect greedy running time
+                let greedy_time = experiment.get_mean_elapsed_time();
+                
+                // STEEPEST
+                println!("Steepest Solver");
+                let mut ls_solver: SteepestLSSolver<'_> = SteepestLSSolver::new(&qap_problem);
+                let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
+                experiment.run();
+                let path = Path::new(".")
+                    .join(RESULTS_FOLDER)
+                    .join(instance_filename.to_owned() + "_steepest.csv")
+                    .to_string_lossy()
+                    .to_string();
+                let _ = experiment.save_results(&path);
+                let steepest_time = experiment.get_mean_elapsed_time();
 
-                // init random solver
-                // let mut random_solver: RandomSolver<'_> = RandomSolver::new(&qap_problem);
-                // let mut experiment = Experiment::new(&mut random_solver, 10);
-                // // Run with a time limit of 10 milliseconds
-                // experiment.run_with_timelimit(10);
-                // let path = Path::new(".")
-                //     .join(RESULTS_FOLDER)
-                //     .join(instance_filename.to_owned() + "_random.csv")
-                //     .to_string_lossy()
-                //     .to_string();
-                // let _ = experiment.save_results(&path);
-
-                // let mut ls_solver: GreedyLSSolver<'_> = GreedyLSSolver::new(&qap_problem);
-                // let mut experiment = Experiment::new(&mut ls_solver, 10);
-                // // Run LS greedy for 10 times
-                // experiment.run();
-                // let path = Path::new(".")
-                //     .join(RESULTS_FOLDER)
-                //     .join(instance_filename.to_owned() + "_ls_greedy.csv")
-                //     .to_string_lossy()
-                //     .to_string();
-                // let _ = experiment.save_results(&path);
-                // let mut ls_solver: SteepestLSSolver<'_> = SteepestLSSolver::new(&qap_problem);
-                // let mut experiment = Experiment::new(&mut ls_solver, 1);
-                // // Run LS greedy for 10 times
-                // experiment.run_with_timelimit(300);
-                // // experiment.run();
-                // let path = Path::new(".")
-                //     .join(RESULTS_FOLDER)
-                //     .join(instance_filename.to_owned() + "_ls_greedy.csv")
-                //     .to_string_lossy()
-                //     .to_string();
-                // let _ = experiment.save_results(&path);
+                let time_limit = (greedy_time + steepest_time) / 2 as u128;
+                println!("{}", time_limit);
 
                 println!("Random Solver");
-                let mut ls_solver: RandomSolver<'_> = RandomSolver::new(&qap_problem, Some(1000));
-                let mut experiment = Experiment::new(&mut ls_solver, 10);
+                let mut ls_solver: RandomSolver<'_> = RandomSolver::new(&qap_problem, Some(time_limit));
+                let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
                 experiment.run();
                 let path = Path::new(".")
                     .join(RESULTS_FOLDER)
@@ -94,22 +88,20 @@ fn main() {
 
                 println!("Random Walk Solver");
                 let mut ls_solver: RandomWalkSolver<'_> =
-                    RandomWalkSolver::new(&qap_problem, Some(1000));
-                let mut experiment = Experiment::new(&mut ls_solver, 10);
+                    RandomWalkSolver::new(&qap_problem, Some(time_limit));
+                let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
                 // Run LS greedy for 10 times
                 experiment.run();
-                // experiment.run();
                 let path = Path::new(".")
                     .join(RESULTS_FOLDER)
-                    .join(instance_filename.to_owned() + "_random_walk.csv")
+                    .join(instance_filename.to_owned() + "_random-walk.csv")
                     .to_string_lossy()
                     .to_string();
                 let _ = experiment.save_results(&path);
 
                 println!("Heuristic Solver");
                 let mut ls_solver: HeuristicSolver<'_> = HeuristicSolver::new(&qap_problem);
-                let mut experiment = Experiment::new(&mut ls_solver, 10);
-                // Run Heuristic for 10 times
+                let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
                 experiment.run();
                 // experiment.run();
                 let path = Path::new(".")

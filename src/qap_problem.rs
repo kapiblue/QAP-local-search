@@ -1,8 +1,8 @@
+use crate::solution::Solution;
+use crate::utils::*;
+use rand::rngs::ThreadRng;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use crate::utils::*;
-use crate::solution::Solution;
-use rand::rngs::ThreadRng;
 
 pub struct QapProblem {
     n: usize,
@@ -60,23 +60,29 @@ impl QapProblem {
         let n: usize = lines.next().unwrap()?.trim().parse().unwrap();
 
         // Skip the empty line
-        lines.next();
+        // lines.next();
 
         // Parse matrix A
         let mut matrix_a = Vec::with_capacity(n);
-        for _ in 0..n {
+        let mut i = 0;
+        while i < n {
             let line = lines.next().unwrap()?;
-            let row: Vec<i32> = line
-                .split_whitespace()
-                .map(|s| s.parse().unwrap())
-                .collect();
-            matrix_a.push(row);
+            // Handle empty lines
+            if line.len() != 0 {
+                let row: Vec<i32> = line
+                    .split_whitespace()
+                    .map(|s| s.parse().unwrap())
+                    .collect();
+                // println!("{}", row.len());
+                matrix_a.push(row);
+                i += 1;
+            }
         }
 
         // Skip the empty line
         //&lines.;
-  //      let possibly_empty_line:String = lines.peek();
-//        println!("{}", possibly_empty_line);
+        //      let possibly_empty_line:String = lines.peek();
+        //        println!("{}", possibly_empty_line);
 
         // Parse matrix B
         let mut matrix_b: Vec<Vec<i32>> = Vec::with_capacity(n);
@@ -100,9 +106,10 @@ impl QapProblem {
                 }
             }
             assert_eq!(row.len(), n);
+            // println!("{}", row.len());
             matrix_b.push(row);
         }
-                assert_eq!(matrix_a.len(), n);
+        assert_eq!(matrix_a.len(), n);
         assert_eq!(matrix_b.len(), n);
         Ok((n, matrix_a, matrix_b))
     }

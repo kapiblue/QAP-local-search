@@ -34,7 +34,7 @@ impl<'a> SteepestLSSolver<'a> {
 
     fn solve_steepest(&mut self, initial_solution: Solution) -> Solution {
         let mut current_solution = initial_solution;
-        println!("Current solution: {}", current_solution);
+        // println!("Current solution: {}", current_solution);
         let mut i = 1;
         loop {
             let mut best_delta: i32 = num_traits::zero();
@@ -57,7 +57,7 @@ impl<'a> SteepestLSSolver<'a> {
             
             if best_delta < num_traits::zero() {
                 current_solution.exchange_facilities(&best_pair);
-                println!("Best pair: {:?}, Delta: {}; at epoch {}", best_pair, best_delta, i);
+                // println!("Best pair: {:?}, Delta: {}; at epoch {}", best_pair, best_delta, i);
             } else {
                 break;
             }

@@ -47,7 +47,7 @@ impl<'a> RandomWalkSolver<'a> {
 
     fn solve_random_walk(&mut self, initial_solution: Solution) -> Solution {
         let mut current_solution = initial_solution;
-        println!("Random walk initial solution: {}", current_solution);
+        // println!("Random walk initial solution: {}", current_solution);
 
         current_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         let mut current_score = current_solution.get_eval();
@@ -63,8 +63,8 @@ impl<'a> RandomWalkSolver<'a> {
         permute_array(&mut self.rng, &mut self.candidate_moves);
         let range: i32 = self.candidate_moves.len() as i32;
         let mut move_pointer: usize = self.rng.gen_range(0..range) as usize;
-        let start = Instant::now();
         let mut elapsed: u128 = 0;
+        let start = Instant::now();
         while elapsed < self.time_limit {
             elapsed = start.elapsed().as_millis();
             // perform a random move
@@ -106,7 +106,8 @@ impl<'a> Solver for RandomWalkSolver<'a> {
     // Just greedy
     fn solve(&mut self) -> Solution {
         let initial_solution = self.generate_random_solution();
-        let solution = self.solve_random_walk(initial_solution);
+        let mut solution = self.solve_random_walk(initial_solution);
+        solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         return solution;
         // TODO: move generate random solution to QAP problem class
     }

@@ -60,6 +60,10 @@ impl<'a> Experiment<'a> {
         }
     }
 
+    pub fn get_mean_elapsed_time(&self) -> u128 {
+        return self.elapsed_time.iter().sum::<u128>() / self.elapsed_time.len() as u128
+    }
+
     pub fn print_results(&self) {
         for i in 0..self.n_runs {
             println!(
