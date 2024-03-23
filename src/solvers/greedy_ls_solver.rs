@@ -11,6 +11,7 @@ pub struct GreedyLSSolver<'a> {
     rng: ThreadRng,
     iter_count: i32,   // The number of times the LS loop is ran
     update_count: i32, // The number of times a solution is updated
+    initial_solution: Option<Solution>,
 }
 
 impl<'a> GreedyLSSolver<'a> {
@@ -21,12 +22,14 @@ impl<'a> GreedyLSSolver<'a> {
         let rng = rand::thread_rng();
         let iter_count: i32 = 0;
         let update_count: i32 = 0;
+        let initial_solution = None;
         GreedyLSSolver {
             problem,
             candidate_moves,
             rng,
             iter_count,
             update_count,
+            initial_solution,
         }
     }
 
@@ -41,7 +44,8 @@ impl<'a> GreedyLSSolver<'a> {
     fn solve_greedy(&mut self, initial_solution: Solution) -> Solution {
         let mut initial_solution = initial_solution;
         initial_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
-
+        self.initial_solution = Some(Solution::new(initial_solution.get_solution_array()));
+        
         let mut current_solution = initial_solution;
         // println!("LS initial solution: {}", current_solution);
         // Randomize the order of pairs
@@ -69,13 +73,10 @@ impl<'a> GreedyLSSolver<'a> {
             // Update the iteration count
             iter_count = iter_count + 1;
         }
-        // TODO: fix updates of the counter
         self.iter_count = iter_count;
         current_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         return current_solution;
     }
-
-    
 }
 
 impl<'a> Solver for GreedyLSSolver<'a> {
@@ -83,13 +84,14 @@ impl<'a> Solver for GreedyLSSolver<'a> {
     fn solve(&mut self) -> Solution {
         let initial_solution = self.generate_random_solution();
         self.solve_greedy(initial_solution)
-        // TODO: move generate random solution to QAP problem class
-        
     }
     fn get_iter_count(&self) -> i32 {
-        0
+        self.iter_count
     }
     fn get_update_count(&self) -> i32 {
-        0
+        self.update_count
+    }
+    fn get_initial_solution(&self) -> Option<Solution> {
+        self.initial_solution.clone()
     }
 }

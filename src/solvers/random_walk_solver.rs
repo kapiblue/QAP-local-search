@@ -11,8 +11,7 @@ pub struct RandomWalkSolver<'a> {
     problem: &'a QapProblem,
     candidate_moves: Vec<[usize; 2]>,
     rng: ThreadRng,
-    iter_count: i32,   // The number of times the LS loop is ran
-    update_count: i32, // The number of times a solution is updated
+    iter_count: i32,
     time_limit: u128,
 }
 
@@ -32,7 +31,6 @@ impl<'a> RandomWalkSolver<'a> {
             candidate_moves,
             rng,
             iter_count,
-            update_count,
             time_limit,
         }
     }
@@ -64,6 +62,7 @@ impl<'a> RandomWalkSolver<'a> {
         let range: i32 = self.candidate_moves.len() as i32;
         let mut move_pointer: usize = self.rng.gen_range(0..range) as usize;
         let mut elapsed: u128 = 0;
+        let mut iter_count = 0;
         let start = Instant::now();
         while elapsed < self.time_limit {
             elapsed = start.elapsed().as_millis();
@@ -94,7 +93,9 @@ impl<'a> RandomWalkSolver<'a> {
             if move_pointer == self.candidate_moves.len() {
                 move_pointer = 0;
             }
+            iter_count = iter_count + 1;
         }
+        self.iter_count = iter_count;
         best_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         best_solution
     }
@@ -112,9 +113,12 @@ impl<'a> Solver for RandomWalkSolver<'a> {
         // TODO: move generate random solution to QAP problem class
     }
     fn get_iter_count(&self) -> i32 {
-        0
+        self.iter_count
     }
     fn get_update_count(&self) -> i32 {
         0
+    }
+    fn get_initial_solution(&self) -> Option<Solution> {
+        None
     }
 }

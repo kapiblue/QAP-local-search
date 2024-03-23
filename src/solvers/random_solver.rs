@@ -12,6 +12,7 @@ pub struct RandomSolver<'a> {
     problem: &'a QapProblem,
     rng: ThreadRng,
     time_limit: u128,
+    iter_count: i32,
 }
 
 impl<'a> RandomSolver<'a> {
@@ -20,10 +21,12 @@ impl<'a> RandomSolver<'a> {
         let rng = rand::thread_rng();
         let default_time_limit: u128 = 1000;
         let time_limit: u128 = time_limit.unwrap_or(default_time_limit);
+        let iter_count: i32 = 0;
         RandomSolver {
             problem,
             rng,
-            time_limit 
+            time_limit,
+            iter_count
         }
     }
 
@@ -56,6 +59,7 @@ impl<'a> Solver for RandomSolver<'a>{
 
         let start = Instant::now();
         let mut elapsed: u128 = 0;
+        let mut iter_count = 0;
         while elapsed < self.time_limit {
             elapsed = start.elapsed().as_millis();
 
@@ -71,18 +75,23 @@ impl<'a> Solver for RandomSolver<'a>{
                 current_array = solution.get_solution_array();
                 best_solution = Solution::new(current_array);
             }
+            iter_count = iter_count + 1;
         }
 
         best_solution.evaluate(
             self.problem.matrix_a_ref(), 
             self.problem.matrix_b_ref()
         );
+        self.iter_count = iter_count;
         best_solution
     }
     fn get_iter_count(&self) -> i32 {
-        0
+        self.iter_count
     }
     fn get_update_count(&self) -> i32 {
         0
+    }
+    fn get_initial_solution(&self) -> Option<Solution> {
+        None
     }
 }

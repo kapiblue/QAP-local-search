@@ -15,7 +15,6 @@ use crate::experiment::Experiment;
 use crate::solvers::greedy_heuristic_solver::HeuristicSolver;
 use crate::solvers::random_walk_solver::RandomWalkSolver;
 
-use core::time;
 use std::path::Path;
 
 const INSTANCES: [&str; 8] = [

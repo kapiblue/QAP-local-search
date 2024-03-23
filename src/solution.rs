@@ -32,6 +32,7 @@
 use core::fmt;
 use std::f32::INFINITY;
 
+#[derive(Debug, Default, Clone)]
 pub struct Solution {
     pub solution_array: Vec<usize>,
     eval: i32,

@@ -44,6 +44,7 @@ impl<'a> HeuristicSolver<'a> {
         // declare a hashmap for storing used facilities
         let mut used_facilities = std::collections::HashSet::new();
         used_facilities.insert(solution_array[0]);
+        let mut iter_count = 0;
 
         for i in 1..n {
             // we will choose by random from two the best facilities that minimized the cost
@@ -82,7 +83,9 @@ impl<'a> HeuristicSolver<'a> {
                 solution_array[i] = min_cost_facility;
                 used_facilities.insert(min_cost_facility);
             }
+            iter_count = iter_count + 1;
         }
+        self.iter_count = iter_count;
         let mut solution = Solution::new(solution_array);
         solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         solution
@@ -98,9 +101,12 @@ impl<'a> Solver for HeuristicSolver<'a> {
         
     }
     fn get_iter_count(&self) -> i32 {
-        0
+        self.iter_count
     }
     fn get_update_count(&self) -> i32 {
         0
+    }
+    fn get_initial_solution(&self) -> Option<Solution> {
+        None
     }
 }

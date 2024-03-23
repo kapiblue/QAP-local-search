@@ -9,6 +9,9 @@ pub struct SteepestLSSolver<'a> {
     problem: &'a QapProblem,
     candidate_moves: Vec<[usize; 2]>,
     rng: ThreadRng,
+    iter_count: i32,   // The number of times the LS loop is ran
+    update_count: i32, // The number of times a solution is updated
+    initial_solution: Option<Solution>,
 }
 
 impl<'a> SteepestLSSolver<'a> {
@@ -17,10 +20,16 @@ impl<'a> SteepestLSSolver<'a> {
         // Vector of pairs (i, j), moves in order
         let candidate_moves = generate_pairs(problem.get_n());
         let rng = rand::thread_rng();
+        let iter_count: i32 = 0;
+        let update_count: i32 = 0;
+        let initial_solution = None;
         SteepestLSSolver {
             problem,
             candidate_moves,
             rng,
+            iter_count,
+            update_count,
+            initial_solution
         }
     }
 
@@ -33,9 +42,12 @@ impl<'a> SteepestLSSolver<'a> {
     }
 
     fn solve_steepest(&mut self, initial_solution: Solution) -> Solution {
+        self.initial_solution = Some(Solution::new(initial_solution.get_solution_array()));
         let mut current_solution = initial_solution;
         // println!("Current solution: {}", current_solution);
         let mut i = 1;
+        let mut iter_count = 0;
+        self.update_count = 0;
         loop {
             let mut best_delta: i32 = num_traits::zero();
             let mut best_pair: [usize; 2] = [0,0];
@@ -57,13 +69,15 @@ impl<'a> SteepestLSSolver<'a> {
             
             if best_delta < num_traits::zero() {
                 current_solution.exchange_facilities(&best_pair);
+                self.update_count = self.update_count + 1;
                 // println!("Best pair: {:?}, Delta: {}; at epoch {}", best_pair, best_delta, i);
             } else {
                 break;
             }
             i = i + 1;
+            iter_count = iter_count + 1;
         }
-    
+        self.iter_count = iter_count;
         current_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         current_solution
     }
@@ -79,9 +93,12 @@ impl<'a> Solver for SteepestLSSolver<'a> {
         
     }
     fn get_iter_count(&self) -> i32 {
-        0
+        self.iter_count
     }
     fn get_update_count(&self) -> i32 {
-        0
+        self.update_count
+    }
+    fn get_initial_solution(&self) -> Option<Solution> {
+        self.initial_solution.clone()
     }
 }
