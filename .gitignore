@@ -2,3 +2,5 @@
 /.vscode
 
 /results
+
+.DS_Store
