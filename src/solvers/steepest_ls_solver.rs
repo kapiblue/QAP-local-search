@@ -41,8 +41,10 @@ impl<'a> SteepestLSSolver<'a> {
         Solution::new(solution_array)
     }
 
-    fn solve_steepest(&mut self, initial_solution: Solution) -> Solution {
+    fn solve_steepest(&mut self, mut initial_solution: Solution) -> Solution {
+        initial_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         self.initial_solution = Some(Solution::new(initial_solution.get_solution_array()));
+        self.initial_solution.as_mut().unwrap().set_eval(initial_solution.get_eval());
         let mut current_solution = initial_solution;
         // println!("Current solution: {}", current_solution);
         let mut i = 1;

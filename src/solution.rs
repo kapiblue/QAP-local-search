@@ -56,6 +56,10 @@ impl Solution {
         self.eval
     }
 
+    pub fn set_eval(&mut self, eval:i32) {
+        self.eval = eval
+    }
+
     pub fn get_solution_array(&self) -> Vec<usize> {
         self.solution_array.clone()
     }

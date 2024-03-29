@@ -45,6 +45,7 @@ impl<'a> GreedyLSSolver<'a> {
         let mut initial_solution = initial_solution;
         initial_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
         self.initial_solution = Some(Solution::new(initial_solution.get_solution_array()));
+        self.initial_solution.as_mut().unwrap().set_eval(initial_solution.get_eval());
         
         let mut current_solution = initial_solution;
         // println!("LS initial solution: {}", current_solution);
