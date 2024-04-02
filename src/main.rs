@@ -72,7 +72,7 @@ fn main() {
                 let steepest_time = experiment.get_mean_elapsed_time();
 
                 let time_limit = (greedy_time + steepest_time) / 2 as u128;
-                println!("{}", time_limit);
+                // println!("{}", time_limit);
 
                 println!("Random Solver");
                 let mut ls_solver: RandomSolver<'_> = RandomSolver::new(&qap_problem, Some(time_limit));
@@ -99,7 +99,7 @@ fn main() {
                 let _ = experiment.save_results(&path);
 
                 println!("Heuristic Solver");
-                let mut ls_solver: HeuristicSolver<'_> = HeuristicSolver::new(&qap_problem);
+                let mut ls_solver: HeuristicSolver<'_> = HeuristicSolver::new(&qap_problem, Some(time_limit));
                 let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
                 experiment.run();
                 // experiment.run();

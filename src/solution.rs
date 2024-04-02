@@ -92,6 +92,8 @@ impl Solution {
         self.solution_array[p2] = tmp;
     }
 
+
+
     pub fn calculate_delta(
         &self,
         matrix_a: &Vec<Vec<i32>>,
@@ -117,6 +119,26 @@ impl Solution {
                 delta + (matrix_a[g][i] - matrix_a[g][j]) * (matrix_b[fg][fj] - matrix_b[fg][fi]);
             delta =
                 delta + (matrix_a[i][g] - matrix_a[j][g]) * (matrix_b[fj][fg] - matrix_b[fi][fg]);
+        }
+        delta
+    }
+
+     /// Exchange n facilities
+    pub fn exchange_n_facilities(&mut self, pairs: &Vec<[usize; 2]>) -> () {
+        for pair in pairs {
+            self.exchange_facilities(pair);
+        }
+    }
+
+    pub fn calculate_n_deltas(
+        &self,
+        matrix_a: &Vec<Vec<i32>>,
+        matrix_b: &Vec<Vec<i32>>,
+        pairs: &Vec<[usize; 2]>,
+    ) -> i32 {
+        let mut delta: i32 = 0;
+        for pair in pairs {
+            delta += self.calculate_delta(matrix_a, matrix_b, pair);
         }
         delta
     }

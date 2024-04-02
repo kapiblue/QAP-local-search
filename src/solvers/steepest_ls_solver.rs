@@ -8,6 +8,7 @@ use crate::utils::*;
 pub struct SteepestLSSolver<'a> {
     problem: &'a QapProblem,
     candidate_moves: Vec<[usize; 2]>,
+    two_candidates_moves: Vec<Vec<[usize; 2]>>,
     rng: ThreadRng,
     iter_count: i32,   // The number of times the LS loop is ran
     update_count: i32, // The number of times a solution is updated
@@ -19,6 +20,7 @@ impl<'a> SteepestLSSolver<'a> {
     pub fn new(problem: &'a QapProblem) -> SteepestLSSolver<'a> {
         // Vector of pairs (i, j), moves in order
         let candidate_moves = generate_pairs(problem.get_n());
+        let two_candidates_moves = generate_two_pairs(problem.get_n());
         let rng = rand::thread_rng();
         let iter_count: i32 = 0;
         let update_count: i32 = 0;
@@ -26,6 +28,7 @@ impl<'a> SteepestLSSolver<'a> {
         SteepestLSSolver {
             problem,
             candidate_moves,
+            two_candidates_moves,
             rng,
             iter_count,
             update_count,
@@ -47,12 +50,17 @@ impl<'a> SteepestLSSolver<'a> {
         self.initial_solution.as_mut().unwrap().set_eval(initial_solution.get_eval());
         let mut current_solution = initial_solution;
         // println!("Current solution: {}", current_solution);
-        let mut i = 1;
+
+        let num_candidates = self.candidate_moves.len();
+
+        // let mut i = 1;
         let mut iter_count = 0;
         self.update_count = 0;
         loop {
             let mut best_delta: i32 = num_traits::zero();
-            let mut best_pair: [usize; 2] = [0,0];
+            // let mut best_pair: [usize; 2] = [0,0];
+
+            let mut best_pairs  = vec![];
     
             for &pair in &self.candidate_moves {
                 let delta: i32 = current_solution.calculate_delta(
@@ -65,18 +73,46 @@ impl<'a> SteepestLSSolver<'a> {
     
                 if delta < best_delta {
                     best_delta = delta;
-                    best_pair = pair;
+                    best_pairs = vec![pair];
                 }
             }
+
+            // exchange 2 pairs in the solution
+            // for i in 0..num_candidates{
+            //     for j in i+1..num_candidates{
+            //         let pair1 = self.candidate_moves[i];
+            //         let pair2 = self.candidate_moves[j];
+            //         best_pairs = vec![pair1, pair2];
+            //         let delta: i32 = current_solution.calculate_n_deltas(
+            //             self.problem.matrix_a_ref(), 
+            //             self.problem.matrix_b_ref(),
+            //             &best_pairs);
+            //         if delta < best_delta {
+            //             best_delta = delta;
+            //             best_pairs = vec![pair1, pair2];
+            //         }
+            //     }
+            // }
+            // for pairs in &self.two_candidates_moves {
+            //     let delta: i32 = current_solution.calculate_n_deltas(
+            //         self.problem.matrix_a_ref(),
+            //         self.problem.matrix_b_ref(),
+            //         &pairs,
+            //     );
+            //     if delta < best_delta {
+            //         best_delta = delta;
+            //         best_pairs = pairs.to_vec();
+            //     }
+            // }
             
             if best_delta < num_traits::zero() {
-                current_solution.exchange_facilities(&best_pair);
+                current_solution.exchange_n_facilities(&best_pairs);
                 self.update_count = self.update_count + 1;
-                // println!("Best pair: {:?}, Delta: {}; at epoch {}", best_pair, best_delta, i);
+                // println!("Best pair: {:?}, Delta: {}; at epoch {}", best_pairs, best_delta, iter_count);
             } else {
                 break;
             }
-            i = i + 1;
+            // i = i + 1;
             iter_count = iter_count + 1;
         }
         self.iter_count = iter_count;

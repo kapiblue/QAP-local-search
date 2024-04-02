@@ -56,6 +56,24 @@ pub fn generate_pairs(n: usize) -> Vec<[usize; 2]> {
     pairs
 }
 
+// Generates all two pairs [(i, j), (k, l)] where i!=j, k!=l, i!=k, j!=l
+// Returns a vector of pairs
+pub fn generate_two_pairs(n: usize) -> Vec<Vec<[usize; 2]>> {
+    let mut pairs = Vec::with_capacity(n);
+    for i in 0..n{
+        for j in i+1..n{
+            for k in 0..n{
+                for l in k+1..n{
+                    if i != k && i != l && j != k && j != l{
+                        pairs.push([[i, j], [k, l]].to_vec());
+                    }
+                }
+            }
+        }
+    }
+    pairs
+}
+
 /// The function `arange` populates a mutable array with values starting from a given low value and
 /// incrementing by a specified step.
 /// 

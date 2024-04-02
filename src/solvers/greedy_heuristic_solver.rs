@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use rand::rngs::ThreadRng;
 use rand::seq::index;
 
@@ -10,20 +12,24 @@ use rand::Rng;
 pub struct HeuristicSolver<'a> {
     problem: &'a QapProblem,
     rng: ThreadRng,
+    time_limit: u128,
     iter_count: i32,   // The number of times the LS loop is ran
     update_count: i32, // The number of times a solution is updated
 }
 
 impl<'a> HeuristicSolver<'a> {
     // Constructor
-    pub fn new(problem: &'a QapProblem) -> HeuristicSolver<'a> {
+    pub fn new(problem: &'a QapProblem, time_limit: Option<u128>) -> HeuristicSolver<'a> {
         // Vector of pairs (i, j), moves in order
         let rng = rand::thread_rng();
         let iter_count: i32 = 0;
+        let default_time_limit: u128 = 1000;
+        let time_limit: u128 = time_limit.unwrap_or(default_time_limit);
         let update_count: i32 = 0;
         HeuristicSolver {
             problem,
             rng,
+            time_limit,
             iter_count,
             update_count,
         }
@@ -123,7 +129,29 @@ impl<'a> HeuristicSolver<'a> {
 impl<'a> Solver for HeuristicSolver<'a> {
     // Just greedy
     fn solve(&mut self) -> Solution {
-        self.solve_heuristic()
+        let mut solution = self.solve_heuristic();
+
+        let mut best_solution = Solution::new(solution.get_solution_array());
+        best_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
+        let mut best_score = solution.get_eval();
+
+        let start = Instant::now();
+        let mut elapsed: u128 = 0;
+        let mut iter_count = 0;
+
+        while elapsed < self.time_limit {
+            elapsed = start.elapsed().as_millis();
+            solution = self.solve_heuristic();
+
+            let score = solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
+            if score < best_score {
+                best_score = score;
+                best_solution = Solution::new(solution.get_solution_array());
+            }
+            iter_count = iter_count + 1;
+        }
+        best_solution.evaluate(self.problem.matrix_a_ref(), self.problem.matrix_b_ref());
+        best_solution
         // TODO: move generate random solution to QAP problem class
         
     }
