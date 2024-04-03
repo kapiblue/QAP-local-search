@@ -8,6 +8,7 @@ use crate::solvers::solver::Solver;
 use crate::solution::Solution;
 use crate::utils::*;
 
+/// Random Solver stores a ThreadRng object to reuse
 pub struct RandomSolver<'a> {
     problem: &'a QapProblem,
     rng: ThreadRng,
@@ -46,6 +47,8 @@ impl<'a> RandomSolver<'a> {
 
 
 impl<'a> Solver for RandomSolver<'a>{
+    /// Generates random solutions and returns the best solution
+    /// found before the time limit
     fn solve(&mut self) -> Solution {
         let mut solution =  self.generate_random_solution();
         

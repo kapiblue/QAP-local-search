@@ -17,6 +17,7 @@ use crate::solvers::random_walk_solver::RandomWalkSolver;
 
 use std::path::Path;
 
+/// Instance file names
 const INSTANCES: [&str; 8] = [
                               "tai60a.dat",
                               "wil100.dat",
@@ -26,12 +27,15 @@ const INSTANCES: [&str; 8] = [
                               "had20.dat",
                               "nug30.dat",
                               "nug15.dat"];
-                            
+
+/// The name of the folder where ths csv files should be saved
 const RESULTS_FOLDER: &str = "results";
-// This folder should be inside ./data
+/// Folder with instances. This folder should be inside ./data
 const DATA_FOLDER: &str = "qapdatsol";
+/// How many times the experiments should be ran (for statistics) 
 const NRUNS: usize = 10;
 
+/// Runs experiments across various solvers (algorithms)
 fn main() {
     for instance_filename in INSTANCES {
         let instance_path = Path::new(".")
