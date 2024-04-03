@@ -44,8 +44,8 @@ pub fn generate_random_int_pair<R: Rng + ?Sized>(rng: &mut R, range: u32) -> (u3
     return (x1, x2);
 }
 
-// Generates all pairs (i,j) i!=j where i=0..n, j=i..n.
-// Returns a vector of pairs 
+/// Generates all pairs (i,j) i!=j where i=0..n, j=i..n.
+/// Returns a vector of pairs 
 pub fn generate_pairs(n: usize) -> Vec<[usize; 2]> {
     let mut pairs = Vec::with_capacity(n);
     for i in 0..n{
@@ -56,8 +56,8 @@ pub fn generate_pairs(n: usize) -> Vec<[usize; 2]> {
     pairs
 }
 
-// Generates all two pairs [(i, j), (k, l)] where i!=j, k!=l, i!=k, j!=l
-// Returns a vector of pairs
+/// Generates all two pairs [(i, j), (k, l)] where i!=j, k!=l, i!=k, j!=l
+/// Returns a vector of pairs
 pub fn generate_two_pairs(n: usize) -> Vec<Vec<[usize; 2]>> {
     let mut pairs = Vec::with_capacity(n);
     for i in 0..n{
@@ -113,7 +113,7 @@ where
     }
     println!();
 }
-
+/// Prints a two-dimensional vector
 pub fn print_matrix<T>(matrix: &Vec<Vec<T>>)
 where
     T: std::fmt::Debug,
@@ -122,11 +122,3 @@ where
         println!("{:?}", row);
     }
 }
-
-// pub fn timeit<F: Fn() -> T, T>(f: F, i: u32) -> T {
-//     let start = Instant::now();
-//     let result = f();
-//     let duration = start.elapsed();
-//     println!("it took {} seconds", duration.as_millis());
-//     result
-//   }

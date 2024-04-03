@@ -12,7 +12,7 @@ pub struct QapProblem {
 }
 
 impl QapProblem {
-    // Constructor
+    /// Constructor
     pub fn new(filename: &str) -> Result<QapProblem, std::io::Error> {
         // Create and return an object if no error
         match Self::parse_file(filename) {
@@ -37,20 +37,20 @@ impl QapProblem {
         Solution::new(solution_array)
     }
 
-    // Returns a reference to matrix a
+    /// Returns a reference to matrix a
     pub fn matrix_a_ref(&self) -> &Vec<Vec<i32>> {
         &self.matrix_a
     }
-    // Returns a reference to matrix b
+    /// Returns a reference to matrix b
     pub fn matrix_b_ref(&self) -> &Vec<Vec<i32>> {
         &self.matrix_b
     }
-
+    /// Returns the instance size
     pub fn get_n(&self) -> usize {
         self.n
     }
 
-    // Function to parse the file
+    /// Function to parse the file describing the instance
     fn parse_file(filename: &str) -> Result<(usize, Vec<Vec<i32>>, Vec<Vec<i32>>), std::io::Error> {
         let file = File::open(filename)?;
         let reader = BufReader::new(file);
@@ -58,9 +58,6 @@ impl QapProblem {
 
         // Parse the first line to get the size of the matrices
         let n: usize = lines.next().unwrap()?.trim().parse().unwrap();
-
-        // Skip the empty line
-        // lines.next();
 
         // Parse matrix A
         let mut matrix_a = Vec::with_capacity(n);
@@ -73,16 +70,10 @@ impl QapProblem {
                     .split_whitespace()
                     .map(|s| s.parse().unwrap())
                     .collect();
-                // println!("{}", row.len());
                 matrix_a.push(row);
                 i += 1;
             }
         }
-
-        // Skip the empty line
-        //&lines.;
-        //      let possibly_empty_line:String = lines.peek();
-        //        println!("{}", possibly_empty_line);
 
         // Parse matrix B
         let mut matrix_b: Vec<Vec<i32>> = Vec::with_capacity(n);
@@ -106,7 +97,6 @@ impl QapProblem {
                 }
             }
             assert_eq!(row.len(), n);
-            // println!("{}", row.len());
             matrix_b.push(row);
         }
         assert_eq!(matrix_a.len(), n);

@@ -16,7 +16,7 @@ pub struct RandomSolver<'a> {
 }
 
 impl<'a> RandomSolver<'a> {
-    // Constructor
+    /// Constructor
     pub fn new(problem: &'a QapProblem, time_limit: Option<u128>) -> RandomSolver<'a> {
         let rng = rand::thread_rng();
         let default_time_limit: u128 = 1000;

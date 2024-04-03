@@ -33,16 +33,19 @@ use core::fmt;
 use std::f32::INFINITY;
 
 #[derive(Debug, Default, Clone)]
+/// A solution is represented here
 pub struct Solution {
+    /// The array stores the permutation
     pub solution_array: Vec<usize>,
+    /// Stores the evaluation of the solution
     eval: i32,
+    /// Stores the instance size
     n: usize,
 }
 
 impl Solution {
-    // constructor
+    /// Constructor of the solution from an existing vector (permutation)
     pub fn new(solution_array: Vec<usize>) -> Self {
-        // Revise
         let eval: i32 = std::f32::INFINITY as i32;
         let n = solution_array.len();
         Solution {
@@ -51,20 +54,22 @@ impl Solution {
             n,
         }
     }
-
+    /// Returns the evaluation.
+    /// evaluate() must be called first.
     pub fn get_eval(&self) -> i32 {
         self.eval
     }
-
+    /// Sets evaluation, saves computations
+    /// if the evaluation is already known
     pub fn set_eval(&mut self, eval:i32) {
         self.eval = eval
     }
-
+    /// Returns the solution array (vector)
     pub fn get_solution_array(&self) -> Vec<usize> {
         self.solution_array.clone()
     }
 
-    // evaluate the solution based on the provided matrices A and B
+    /// Evaluates the solution based on the provided matrices A and B (references)
     pub fn evaluate(&mut self, matrix_a: &Vec<Vec<i32>>, matrix_b: &Vec<Vec<i32>>) -> i32 {
         let n: usize = self.solution_array.len();
         let mut evaluation: i32 = 0;
@@ -83,7 +88,7 @@ impl Solution {
         self.eval = evaluation;
         evaluation
     }
-
+    /// Swaps array elements at provided indices
     pub fn exchange_facilities(&mut self, pair: &[usize; 2]) {
         let p1 = pair[0];
         let p2 = pair[1];
@@ -93,7 +98,7 @@ impl Solution {
     }
 
 
-
+    /// Calculates delta of a pair exchange in O(N) time
     pub fn calculate_delta(
         &self,
         matrix_a: &Vec<Vec<i32>>,
@@ -123,7 +128,7 @@ impl Solution {
         delta
     }
 
-     /// Exchange n facilities
+     /// Exchanges n facilities
     pub fn exchange_n_facilities(&mut self, pairs: &Vec<[usize; 2]>) -> () {
         for pair in pairs {
             self.exchange_facilities(pair);

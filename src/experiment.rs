@@ -5,10 +5,15 @@ use csv::Writer;
 use std::error::Error;
 use std::time::Instant;
 
+/// An experiment object stores a solver, runs an experiment
+/// measures time, and saves a csv file with results
 pub struct Experiment<'a> {
     solver: &'a mut dyn Solver,
+    /// How many times the experiment should be ran
     n_runs: usize,
+    /// To store final solutions
     final_solutions: Vec<Solution>,
+    /// To store initial solutions
     initial_solutions: Vec<Option<Solution>>,
     iterations: Vec<i32>,
     updates: Vec<i32>,
@@ -32,7 +37,8 @@ impl<'a> Experiment<'a> {
             elapsed_time,
         }
     }
-    // Run solver n times
+    /// Runs solver n times, measures time,
+    /// and saves statistics
     pub fn run(&mut self) -> () {
         for i in 0..self.n_runs {
 
@@ -53,7 +59,7 @@ impl<'a> Experiment<'a> {
         }
     }
 
-    // Run solver with time limit. Each of the n runs is limited.
+    /// Runs solver with time limit. Each of the n runs is limited.
     pub fn run_with_timelimit(&mut self, limit: u128) -> () {
         for _ in 0..self.n_runs {
             let start = Instant::now();
@@ -71,6 +77,8 @@ impl<'a> Experiment<'a> {
         }
     }
 
+    /// Returns the mean elapsed time of all runs
+    /// The run finction should be ran first.
     pub fn get_mean_elapsed_time(&self) -> u128 {
         return self.elapsed_time.iter().sum::<u128>() / self.elapsed_time.len() as u128
     }
@@ -86,6 +94,7 @@ impl<'a> Experiment<'a> {
             );
         }
     }
+    /// Saves results in a csv file  according to the provided path
     pub fn save_results(&self, path: &String) -> Result<(), Box<dyn Error>> {
         let mut wtr = Writer::from_path(path)?;
         // Write column names
