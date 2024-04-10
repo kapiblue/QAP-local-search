@@ -2,7 +2,7 @@
 
 ### Getting started
 
-Enter the directory in the terminal and run `cargo run`.
+To run the experiments for the first report, please run `cargo run --bin report1_exp`
 
 ### Documentation
 

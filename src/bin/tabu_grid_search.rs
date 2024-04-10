@@ -1,10 +1,7 @@
 use qap_local_search::qap_problem::QapProblem;
 use qap_local_search::experiment::Experiment;
+
 use qap_local_search::solvers::tabu_search_solver::TSSolver;
-
-
-use qap_local_search::solvers::greedy_ls_solver::GreedyLSSolver;
-use qap_local_search::solvers::steepest_ls_solver::SteepestLSSolver;
 
 use std::path::Path;
 
@@ -56,19 +53,19 @@ fn main() {
                 let _ = experiment.save_results(&path);
                 break;
 
-                // GREEDY
-                println!("Greedy Solver");
-                let mut ls_solver: GreedyLSSolver<'_> = GreedyLSSolver::new(&qap_problem);
-                let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
-                experiment.run();
-                let path = Path::new(".")
-                    .join(RESULTS_FOLDER)
-                    .join(instance_filename.to_owned() + "_greedy.csv")
-                    .to_string_lossy()
-                    .to_string();
-                let _ = experiment.save_results(&path);
-                // Collect greedy running time
-                let greedy_time = experiment.get_mean_elapsed_time();
+                // // GREEDY
+                // println!("Greedy Solver");
+                // let mut ls_solver: GreedyLSSolver<'_> = GreedyLSSolver::new(&qap_problem);
+                // let mut experiment = Experiment::new(&mut ls_solver, NRUNS);
+                // experiment.run();
+                // let path = Path::new(".")
+                //     .join(RESULTS_FOLDER)
+                //     .join(instance_filename.to_owned() + "_greedy.csv")
+                //     .to_string_lossy()
+                //     .to_string();
+                // let _ = experiment.save_results(&path);
+                // // Collect greedy running time
+                // let greedy_time = experiment.get_mean_elapsed_time();
 
                 // // STEEPEST
                 // println!("Steepest Solver");

@@ -1,13 +1,12 @@
 use rand::rngs::ThreadRng;
 
+use crate::utils::generate_pairs;
 use crate::candidate_move::CandidateMove;
 use crate::qap_problem::QapProblem;
 use crate::solution::Solution;
 use crate::solvers::solver::Solver;
-use crate::{candidate_move, utils::*};
 use rand::Rng;
 use std::cmp::max;
-use std::time::Instant;
 
 pub struct TSSolver<'a> {
     problem: &'a mut QapProblem,
@@ -62,8 +61,6 @@ impl<'a> TSSolver<'a> {
 
         let iter_count: i32 = 0;
         let update_count: i32 = 0;
-
-        let default_time_limit: u128 = 1000;
 
         let tabu_list: Vec<Vec<i32>> = create_tabu_list(problem.get_n());
         let delta_range = 0;

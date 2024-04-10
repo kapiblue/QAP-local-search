@@ -1,19 +1,12 @@
-use qap_problem::*;
-use utils::*;
+use qap_local_search::qap_problem::QapProblem;
+use qap_local_search::experiment::Experiment;
 
-mod experiment;
-mod qap_problem;
-mod solution;
-mod solvers;
-mod utils;
+use qap_local_search::solvers::greedy_ls_solver::GreedyLSSolver;
+use qap_local_search::solvers::steepest_ls_solver::SteepestLSSolver;
+use qap_local_search::solvers::random_solver::RandomSolver;
+use qap_local_search::solvers::random_walk_solver::RandomWalkSolver;
+use qap_local_search::solvers::greedy_heuristic_solver::HeuristicSolver;
 
-use solvers::greedy_ls_solver::GreedyLSSolver;
-use solvers::random_solver::RandomSolver;
-use solvers::steepest_ls_solver::SteepestLSSolver;
-
-use crate::experiment::Experiment;
-use crate::solvers::greedy_heuristic_solver::HeuristicSolver;
-use crate::solvers::random_walk_solver::RandomWalkSolver;
 
 use std::path::Path;
 
