@@ -104,3 +104,4 @@ impl QapProblem {
         Ok((n, matrix_a, matrix_b))
     }
 }
+
