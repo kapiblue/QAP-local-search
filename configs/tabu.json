@@ -1,0 +1,42 @@
+{
+    "nug15.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "nug30.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "els19.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "esc128.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "had20.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "tai60a.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "wil100.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    },
+    "bur26c.dat": {
+        "tenure": 7,
+        "k": 10,
+        "lack_impr_iter": 5
+    }
+}

@@ -1,6 +1,7 @@
 use rand::rngs::ThreadRng;
 
 use crate::utils::generate_pairs;
+use crate::utils::permute_array;
 use crate::candidate_move::CandidateMove;
 use crate::qap_problem::QapProblem;
 use crate::solution::Solution;
@@ -95,7 +96,7 @@ impl<'a> TSSolver<'a> {
         // Initialize loop counter
         let mut i: usize = 0;
         // Randomize the order of neighboring moves
-        // permute_array(&mut self.rng, &mut self.neighborhood_moves);
+        permute_array(&mut self.rng, &mut self.neighborhood_moves);
         while i < list_size {
             let pair = &self.neighborhood_moves[i];
             let delta: i32 = current_solution.calculate_delta(
@@ -117,6 +118,7 @@ impl<'a> TSSolver<'a> {
         // Reverse the vector to be able to pop best moves
         self.candidate_list.reverse();
         self.calculate_delta_range();
+        // println!("Delta range {}", self.delta_range);
     }
 
     /// Recalculates delta for the candidate moves
@@ -140,7 +142,7 @@ impl<'a> TSSolver<'a> {
     }
 
     fn is_good_quality(&self, can_move: &CandidateMove) -> bool {
-        can_move.delta < self.delta_range
+        can_move.delta <= self.delta_range
     }
 
     /// Selects the best candidate move in the list
@@ -157,12 +159,19 @@ impl<'a> TSSolver<'a> {
         while is_move_not_found {
             if is_regeneration_needed {
                 // Generate the candidate list
+                // println!("Reg!");
                 self.construct_elite_candidate_list(&current_solution);
+                is_regeneration_needed = false;
             }
+            // println!("Candidate list: {:?}", self.candidate_list);
             let can_move = self.candidate_list.pop().unwrap();
+            // println!("Candidate move: {:?}", can_move);
+            if self.candidate_list.len() == 0 {
+                is_regeneration_needed = true
+            }
             // Checking the aspiration criteria
             // Always accept an improving move
-            if can_move.delta <= 0 {
+            if can_move.delta < 0 {
                 is_move_not_found = false;
                 best_candidate_move = can_move;
             }
@@ -177,15 +186,11 @@ impl<'a> TSSolver<'a> {
                         best_candidate_move = can_move;
                     } else {
                         is_regeneration_needed = true;
+                        continue;
                     }
                 }
             }
-            if self.candidate_list.len() == 0 {
-                is_regeneration_needed = true
-            }
         }
-        // Due to the aspiration criterion, we accept any improving move
-        // If the move is not improving, we will check the tabu list
         best_candidate_move
     }
 
@@ -224,6 +229,7 @@ impl<'a> TSSolver<'a> {
 
         while lack_improvement_iter < self.lack_improvement_iter {
             let selected_move = self.select_best_move(&current_solution);
+            // println!("Selected move: {:?}", selected_move);
             // Apply the move
             current_solution.exchange_n_facilities(&vec![selected_move.pair]);
             self.update_tabu_list(&selected_move);
@@ -232,14 +238,18 @@ impl<'a> TSSolver<'a> {
             // Update the evaluation of the current solution
             current_solution.set_eval(current_solution.get_eval() + selected_move.delta);
 
-            // Update the best solution if a better one was found
-            if current_solution.get_eval() <= best_solution.get_eval() {
-                best_solution = current_solution.clone();
+            if current_solution.get_eval() < best_solution.get_eval() {
                 lack_improvement_iter = 0;
-                self.update_count += 1;
             } else {
                 lack_improvement_iter += 1;
             }
+
+            // Update the best solution if a better one was found
+            if current_solution.get_eval() <= best_solution.get_eval() {
+                best_solution = current_solution.clone();
+                self.update_count += 1;
+            }
+
             self.iter_count += 1;
         }
         best_solution

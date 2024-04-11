@@ -2,5 +2,6 @@
 /.vscode
 
 /results
+/tabu_gs_results
 
 .DS_Store
