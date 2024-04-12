@@ -1,11 +1,11 @@
 use rand::rngs::ThreadRng;
 
-use crate::utils::generate_pairs;
-use crate::utils::permute_array;
 use crate::candidate_move::CandidateMove;
 use crate::qap_problem::QapProblem;
 use crate::solution::Solution;
 use crate::solvers::solver::Solver;
+use crate::utils::generate_pairs;
+use crate::utils::permute_array;
 use rand::Rng;
 use std::cmp::max;
 
@@ -27,7 +27,9 @@ pub struct TSSolver<'a> {
     /// The number of iterations until deactivation
     tenure: i32,
     /// The range of delta values in the current elite population
-    delta_range: i32,
+    elite_threshold: i32,
+    /// The maximum delta improving the best solution
+    improving_delta: i32,
     /// The initial solution
     initial_solution: Option<Solution>,
     // The fraction of the neighborhood to check
@@ -64,7 +66,8 @@ impl<'a> TSSolver<'a> {
         let update_count: i32 = 0;
 
         let tabu_list: Vec<Vec<i32>> = create_tabu_list(problem.get_n());
-        let delta_range = 0;
+        let elite_threshold = 0;
+        let improving_delta = 0;
 
         let initial_solution = None;
 
@@ -77,7 +80,8 @@ impl<'a> TSSolver<'a> {
             update_count,
             tabu_list,
             tenure,
-            delta_range,
+            elite_threshold,
+            improving_delta,
             initial_solution,
             cn_ratio,
             k,
@@ -96,7 +100,7 @@ impl<'a> TSSolver<'a> {
         // Initialize loop counter
         let mut i: usize = 0;
         // Randomize the order of neighboring moves
-        permute_array(&mut self.rng, &mut self.neighborhood_moves);
+        // permute_array(&mut self.rng, &mut self.neighborhood_moves);
         while i < list_size {
             let pair = &self.neighborhood_moves[i];
             let delta: i32 = current_solution.calculate_delta(
@@ -112,13 +116,13 @@ impl<'a> TSSolver<'a> {
         }
         // Sort the candidate moves by descending delta
         self.candidate_list.sort_by_key(|c| c.get_delta());
-        self.delta_range = 0;
+        self.elite_threshold = 0;
         // Select k best moves
         self.candidate_list.truncate(self.k);
         // Reverse the vector to be able to pop best moves
         self.candidate_list.reverse();
-        self.calculate_delta_range();
-        // println!("Delta range {}", self.delta_range);
+        self.calculate_elite_threshold();
+        // println!("Delta range {}", self.elite_threshold);
     }
 
     /// Recalculates delta for the candidate moves
@@ -136,13 +140,15 @@ impl<'a> TSSolver<'a> {
     }
     /// Calculates the range of delta values in the candidate list.
     /// Assumes the vector is sorted in descending order.
-    fn calculate_delta_range(&mut self) -> () {
-        self.delta_range =
-            self.candidate_list[0].delta - self.candidate_list[self.candidate_list.len() - 1].delta
+    fn calculate_elite_threshold(&mut self) -> () {
+        let delta_worst = self.candidate_list[0].delta;
+        let delta_best = self.candidate_list[self.candidate_list.len() - 1].delta;
+        let delta_range =  delta_worst - delta_best;
+        self.elite_threshold = delta_best + delta_range/2;
     }
 
     fn is_good_quality(&self, can_move: &CandidateMove) -> bool {
-        can_move.delta <= self.delta_range
+        can_move.delta <= self.elite_threshold
     }
 
     /// Selects the best candidate move in the list
@@ -166,22 +172,26 @@ impl<'a> TSSolver<'a> {
             // println!("Candidate list: {:?}", self.candidate_list);
             let can_move = self.candidate_list.pop().unwrap();
             // println!("Candidate move: {:?}", can_move);
+            // println!("Threshold: {:?}", self.elite_threshold);
             if self.candidate_list.len() == 0 {
                 is_regeneration_needed = true
             }
             // Checking the aspiration criteria
             // Always accept an improving move
-            if can_move.delta < 0 {
+            if can_move.delta < self.improving_delta {
                 is_move_not_found = false;
                 best_candidate_move = can_move;
+                // println!("Accept impr");
             }
             // Check the tabu list
             else {
                 let i = can_move.pair[0];
                 let j = can_move.pair[1] - i - 1;
+                // println!("Check list {}", self.tabu_list[i][j] == 0);
                 if self.tabu_list[i][j] == 0 {
                     // Check move quality
                     if self.is_good_quality(&can_move) {
+                        // println!("Good quality");
                         is_move_not_found = false;
                         best_candidate_move = can_move;
                     } else {
@@ -228,6 +238,7 @@ impl<'a> TSSolver<'a> {
         let mut lack_improvement_iter = 0;
 
         while lack_improvement_iter < self.lack_improvement_iter {
+            self.improving_delta = current_solution.get_eval() - best_solution.get_eval();
             let selected_move = self.select_best_move(&current_solution);
             // println!("Selected move: {:?}", selected_move);
             // Apply the move

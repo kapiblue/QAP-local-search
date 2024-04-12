@@ -4,6 +4,7 @@ use crate::solvers::solver::Solver;
 use csv::Writer;
 use std::error::Error;
 use std::time::Instant;
+use meansd::MeanSD;
 
 /// An experiment object stores a solver, runs an experiment
 /// measures time, and saves a csv file with results
@@ -81,6 +82,26 @@ impl<'a> Experiment<'a> {
     /// The run finction should be ran first.
     pub fn get_mean_elapsed_time(&self) -> u128 {
         return self.elapsed_time.iter().sum::<u128>() / self.elapsed_time.len() as u128
+    }
+
+    /// Returns the mean and standars deviation of final evaluations of all runs
+    /// The run finction should be ran first.
+    pub fn get_elapsed_time_mean_std(&self) -> (f64, f64) {
+        let mut meansd = MeanSD::default();
+        for i in 0..self.n_runs{
+            meansd.update(self.elapsed_time[i] as f64)
+        }
+        return (meansd.mean(), meansd.sstdev())
+    }
+
+    /// Returns the mean and standars deviation of final evaluations of all runs
+    /// The run finction should be ran first.
+    pub fn get_final_evaluation_mean_std(&self) -> (f64, f64) {
+        let mut meansd = MeanSD::default();
+        for i in 0..self.n_runs{
+            meansd.update(self.final_solutions[i].get_eval() as f64)
+        }
+        return (meansd.mean(), meansd.sstdev())
     }
 
     pub fn print_results(&self) {
