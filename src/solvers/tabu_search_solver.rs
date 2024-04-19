@@ -157,6 +157,7 @@ impl<'a> TSSolver<'a> {
         let mut best_candidate_move = CandidateMove::new([1, 1], 1000);
         // Whether we need to regenerate the candidate list
         let mut is_regeneration_needed = false;
+        let mut was_regeneration_performed = false;
         if self.candidate_list.len() == 0 {
             is_regeneration_needed = true;
         }
@@ -167,6 +168,7 @@ impl<'a> TSSolver<'a> {
                 // Generate the candidate list
                 // println!("Reg!");
                 self.construct_elite_candidate_list(&current_solution);
+                was_regeneration_performed = true;
                 is_regeneration_needed = false;
             }
             // println!("Candidate list: {:?}", self.candidate_list);
@@ -190,11 +192,12 @@ impl<'a> TSSolver<'a> {
                 // println!("Check list {}", self.tabu_list[i][j] == 0);
                 if self.tabu_list[i][j] == 0 {
                     // Check move quality
-                    if self.is_good_quality(&can_move) {
+                    if self.is_good_quality(&can_move) | was_regeneration_performed{
                         // println!("Good quality");
                         is_move_not_found = false;
                         best_candidate_move = can_move;
-                    } else {
+                    }
+                    else {
                         is_regeneration_needed = true;
                         continue;
                     }

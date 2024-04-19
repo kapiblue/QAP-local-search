@@ -4,6 +4,7 @@ use qap_local_search::qap_problem::QapProblem;
 use qap_local_search::solvers::tabu_search_solver::TSSolver;
 
 use core::cmp::max;
+use core::cmp::min;
 use csv::Writer;
 use std::path::Path;
 
@@ -28,8 +29,8 @@ const NRUNS: usize = 10;
 
 // Grid Search parameters
 const TENURES: [f32; 3] = [0.2, 0.25, 0.3];
-const KS: [f32; 3] = [1.0, 1.5, 2.0];
-const LITS: [i32; 3] = [5, 10, 20];
+const KS: [f32; 3] = [0.1, 0.25, 0.4];
+const LITS: [i32; 3] = [10, 25, 50];
 
 /// Runs experiments across various solvers (algorithms)
 fn main() {
@@ -68,8 +69,8 @@ fn main() {
                         for lit in LITS {
                             // Calculate the parameters as integers
                             let int_t = (N as f32 * t) as i32;
-                            let int_k = max((int_t as f32 * k ) as usize -1, 5);
-                            let lit = max(int_t - 2, lit);
+                            let int_k = max((N as f32 * k ) as usize, 1);
+                            /// let lit = min(int_t - 2, lit);
                             println!("Tabu Search Solver t = {}, k = {}, lit = {}", t, k, lit);
                             println!("int_t = {}, int_k = {}", int_t, int_k);
                             let mut ts_solver: TSSolver<'_> =

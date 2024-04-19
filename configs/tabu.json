@@ -35,8 +35,8 @@
         "lack_impr_iter": 10
     },
     "bur26c.dat": {
-        "tenure": 7,
-        "k": 14,
+        "tenure": 20,
+        "k": 25,
         "lack_impr_iter": 5
     }
 }
