@@ -1,0 +1,42 @@
+{
+    "nug15.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "nug30.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "els19.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "esc128.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "had20.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "tai60a.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "wil100.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    },
+    "bur26c.dat": {
+        "temp_mul": 0.9,
+        "iter_mul": 8,
+        "l_div": 4
+    }
+}
