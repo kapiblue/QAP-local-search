@@ -1,6 +1,7 @@
 use qap_local_search::qap_problem::QapProblem;
 use qap_local_search::experiment::Experiment;
 use qap_local_search::solvers::tabu_search_solver::TSSolver;
+use qap_local_search::solvers::simulated_annealing_solver::SASolver;
 
 
 use qap_local_search::solvers::greedy_ls_solver::GreedyLSSolver;
@@ -44,17 +45,28 @@ fn main() {
             Ok(mut qap_problem) => {
                 // TABU
 
-                println!("Tabu Search Solver");
-                let mut ts_solver: TSSolver<'_> = TSSolver::new(&mut qap_problem,  20, 0.9, 20, 10);
-                let mut experiment = Experiment::new(&mut ts_solver, NRUNS);
-                experiment.run();
-                let path = Path::new(".")
-                    .join(RESULTS_FOLDER)
-                    .join(instance_filename.to_owned() + "_tabu.csv")
-                    .to_string_lossy()
-                    .to_string();
-                let _ = experiment.save_results(&path);
-                break;
+                // println!("Tabu Search Solver");
+                // let mut ts_solver: TSSolver<'_> = TSSolver::new(&mut qap_problem,  20, 0.9, 20, 10);
+                // let mut experiment = Experiment::new(&mut ts_solver, NRUNS);
+                // experiment.run();
+                // let path = Path::new(".")
+                //     .join(RESULTS_FOLDER)
+                //     .join(instance_filename.to_owned() + "_tabu.csv")
+                //     .to_string_lossy()
+                //     .to_string();
+                // let _ = experiment.save_results(&path);
+
+                // println!("Simulated Annealing Solver");
+                // let mut sa_solver: SASolver<'_> = SASolver::new(&mut qap_problem);
+                // sa_solver.compute_initial_temperature();
+                // let mut experiment = Experiment::new(&mut sa_solver, NRUNS);
+                // experiment.run();
+                // let path = Path::new(".")
+                //     .join(RESULTS_FOLDER)
+                //     .join(instance_filename.to_owned() + "_sa.csv")
+                //     .to_string_lossy()
+                //     .to_string();
+                // let _ = experiment.save_results(&path);
 
                 // GREEDY
                 println!("Greedy Solver");
@@ -68,7 +80,7 @@ fn main() {
                     .to_string();
                 let _ = experiment.save_results(&path);
                 // Collect greedy running time
-                let greedy_time = experiment.get_mean_elapsed_time();
+                // let greedy_time = experiment.get_mean_elapsed_time();
 
                 // // STEEPEST
                 // println!("Steepest Solver");
