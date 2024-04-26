@@ -1,42 +1,42 @@
 {
     "nug15.dat": {
-        "tenure": 5,
-        "k": 3,
-        "lack_impr_iter": 3
+        "tenure": 6,
+        "k": 9,
+        "lack_impr_iter": 50
     },
     "nug30.dat": {
-        "tenure": 7,
-        "k": 5,
-        "lack_impr_iter": 5
+        "tenure": 9,
+        "k": 13,
+        "lack_impr_iter": 50
     },
     "els19.dat": {
-        "tenure": 7,
-        "k": 3,
-        "lack_impr_iter": 5
+        "tenure": 1,
+        "k": 2,
+        "lack_impr_iter": 300
     },
     "esc128.dat": {
-        "tenure": 20,
-        "k": 10,
-        "lack_impr_iter": 15
+        "tenure": 12,
+        "k": 18,
+        "lack_impr_iter": 50
     },
     "had20.dat": {
-        "tenure": 7,
-        "k": 5,
-        "lack_impr_iter": 5
+        "tenure": 4,
+        "k": 6,
+        "lack_impr_iter": 50
     },
     "tai60a.dat": {
-        "tenure": 30,
-        "k": 10,
-        "lack_impr_iter": 25
+        "tenure": 12,
+        "k": 24,
+        "lack_impr_iter": 50
     },
     "wil100.dat": {
         "tenure": 20,
-        "k": 7,
-        "lack_impr_iter": 10
+        "k": 20,
+        "lack_impr_iter": 150
     },
     "bur26c.dat": {
-        "tenure": 20,
-        "k": 25,
-        "lack_impr_iter": 5
+        "tenure": 10,
+        "k": 20,
+        "lack_impr_iter": 100
     }
 }

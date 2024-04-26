@@ -100,7 +100,7 @@ impl<'a> TSSolver<'a> {
         // Initialize loop counter
         let mut i: usize = 0;
         // Randomize the order of neighboring moves
-        // permute_array(&mut self.rng, &mut self.neighborhood_moves);
+        permute_array(&mut self.rng, &mut self.neighborhood_moves);
         while i < list_size {
             let pair = &self.neighborhood_moves[i];
             let delta: i32 = current_solution.calculate_delta(
@@ -171,9 +171,9 @@ impl<'a> TSSolver<'a> {
                 was_regeneration_performed = true;
                 is_regeneration_needed = false;
             }
-            // println!("Candidate list: {:?}", self.candidate_list);
+            //println!("Candidate list: {:?}", self.candidate_list);
             let can_move = self.candidate_list.pop().unwrap();
-            // println!("Candidate move: {:?}", can_move);
+            //println!("Candidate move: {:?}", can_move);
             // println!("Threshold: {:?}", self.elite_threshold);
             if self.candidate_list.len() == 0 {
                 is_regeneration_needed = true
@@ -201,6 +201,11 @@ impl<'a> TSSolver<'a> {
                         is_regeneration_needed = true;
                         continue;
                     }
+                }
+                else if was_regeneration_performed{
+                    // println!("Good quality");
+                    is_move_not_found = false;
+                    best_candidate_move = can_move;
                 }
             }
         }

@@ -26,7 +26,7 @@ const RESULTS_FOLDER: &str = "results";
 /// Folder with instances. This folder should be inside ./data
 const DATA_FOLDER: &str = "qapdatsol";
 /// How many times the experiments should be ran (for statistics) 
-const NRUNS: usize = 10;
+const NRUNS: usize = 20;
 
 /// Runs experiments across various solvers (algorithms)
 fn main() {

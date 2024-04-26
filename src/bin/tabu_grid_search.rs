@@ -10,11 +10,11 @@ use std::path::Path;
 
 /// Instance file names
 const INSTANCES: [&str; 8] = [
+    "els19.dat",
+    "esc128.dat",
     "tai60a.dat",
     "wil100.dat",
     "bur26c.dat",
-    "els19.dat",
-    "esc128.dat",
     "had20.dat",
     "nug15.dat",
     "nug30.dat",
@@ -28,9 +28,9 @@ const DATA_FOLDER: &str = "qapdatsol";
 const NRUNS: usize = 10;
 
 // Grid Search parameters
-const TENURES: [f32; 3] = [0.2, 0.25, 0.3];
-const KS: [f32; 3] = [0.1, 0.25, 0.4];
-const LITS: [i32; 3] = [10, 25, 50];
+const TENURES: [f32; 3] = [0.1, 0.25, 0.35];
+const KS: [f32; 3] = [0.7, 2.5, 3.5];
+const LITS: [i32; 3] = [50, 100, 300];
 
 /// Runs experiments across various solvers (algorithms)
 fn main() {
@@ -69,7 +69,7 @@ fn main() {
                         for lit in LITS {
                             // Calculate the parameters as integers
                             let int_t = (N as f32 * t) as i32;
-                            let int_k = max((N as f32 * k ) as usize, 1);
+                            let int_k = max((int_t as f32 * k ) as usize, 1);
                             /// let lit = min(int_t - 2, lit);
                             println!("Tabu Search Solver t = {}, k = {}, lit = {}", t, k, lit);
                             println!("int_t = {}, int_k = {}", int_t, int_k);
@@ -90,6 +90,7 @@ fn main() {
                     }
                 }
                 let _ = wtr.flush();
+                break;
             }
             Err(err) => eprintln!("Error: {}", err),
         }

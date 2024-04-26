@@ -9,8 +9,8 @@ use std::path::Path;
 
 /// Instance file names
 const INSTANCES: [&str; 8] = [
-    "bur26c.dat",
     "esc128.dat",
+    "bur26c.dat",
     "nug30.dat",
     "tai60a.dat",
     "wil100.dat",
@@ -24,7 +24,7 @@ const RESULTS_FOLDER: &str = "results";
 /// Folder with instances. This folder should be inside ./data
 const DATA_FOLDER: &str = "qapdatsol";
 /// How many times the experiments should be ran (for statistics)
-const NRUNS: usize = 10;
+const NRUNS: usize = 20;
 
 /// Runs experiments across various solvers (algorithms)
 fn main() {
@@ -52,7 +52,7 @@ fn main() {
                 let k = params.get("k").unwrap().as_u64().unwrap() as usize;
                 let lack_impr_iter = params.get("lack_impr_iter").unwrap().as_i64().unwrap() as i32;
                 println!("Params: tenure = {}, k= {}, lack iter = {}", tenure, k, lack_impr_iter);
-                let mut ts_solver: TSSolver<'_> = TSSolver::new(&mut qap_problem, tenure, 1.0, k, lack_impr_iter);
+                let mut ts_solver: TSSolver<'_> = TSSolver::new(&mut qap_problem, tenure, 0.7, k, lack_impr_iter);
                 // let sol = ts_solver.solve();
                 // println!("Eval {}", sol.get_eval());
                 let mut experiment = Experiment::new(&mut ts_solver, NRUNS);
@@ -63,7 +63,6 @@ fn main() {
                     .to_string_lossy()
                     .to_string();
                 let _ = experiment.save_results(&path);
-                break;
             }
             Err(err) => eprintln!("Error: {}", err),
         }
